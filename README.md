@@ -42,6 +42,22 @@ Because Strength of Schedule and Quality Wins depend on opponent rankings (which
 - Accent: Red (`#c53030`)
 - Highlight: Gold (`#d69e2e`)
 
+## 🚀 Deploy
+
+This project uses Firebase Hosting as a secondary site on the existing `tjcwordworks` project.
+
+```bash
+# Clone
+git clone https://github.com/IdeaformAppDev/tjc-rankings.git
+cd tjc-rankings
+
+# Deploy (requires Firebase auth)
+firebase use tjcwordworks
+firebase deploy --only hosting:tjcrankings
+```
+
+**Custom domain:** Connect `tjcrankings.com` in Firebase Console → Hosting → tjcrankings → Add custom domain.
+
 ## 📁 Project Structure
 
 ```
@@ -68,11 +84,12 @@ CollegeFootballRanking/
 - [x] Web dashboard (static)
 - [x] Logo + branding
 - [x] Favicon package
+- [x] Firebase hosting config (multi-site)
+- [ ] Deploy to production
 - [ ] Data pipeline (Phase 1)
 - [ ] Core algorithm implementation (Phase 2)
 - [ ] Historical backtest validation (Phase 3)
 - [ ] Automation + cron (Phase 4)
-- [ ] Deploy to production
 
 ## 📝 License
 
