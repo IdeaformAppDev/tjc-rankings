@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TJC Rankings — Computer College Football Rankings</title>
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-    
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --primary: #1a365d;
@@ -21,27 +16,18 @@
             --bg: #f7fafc;
             --text: #2d3748;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Source Sans Pro', sans-serif;
             background: var(--bg);
             color: var(--text);
         }
-        
-        /* Header */
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
             color: white;
             padding: 1rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -50,7 +36,6 @@
             align-items: center;
             gap: 1.5rem;
         }
-        
         .logo {
             width: 120px;
             height: 120px;
@@ -60,18 +45,13 @@
             padding: 4px;
             flex-shrink: 0;
         }
-        
         .logo img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             border-radius: 50%;
         }
-        
-        .brand-text {
-            flex: 1;
-        }
-        
+        .brand-text { flex: 1; }
         .brand-name {
             font-family: 'Playfair Display', serif;
             font-size: 2rem;
@@ -79,11 +59,7 @@
             letter-spacing: -0.02em;
             line-height: 1.1;
         }
-        
-        .brand-name span {
-            color: var(--gold);
-        }
-        
+        .brand-name span { color: var(--gold); }
         .brand-tagline {
             font-size: 0.95rem;
             opacity: 0.9;
@@ -92,8 +68,6 @@
             letter-spacing: 0.1em;
             font-weight: 600;
         }
-        
-        /* Navigation */
         .nav {
             background: white;
             border-bottom: 2px solid #e2e8f0;
@@ -102,7 +76,6 @@
             top: 0;
             z-index: 100;
         }
-        
         .nav-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -110,7 +83,6 @@
             display: flex;
             gap: 2rem;
         }
-        
         .nav a {
             text-decoration: none;
             color: var(--text);
@@ -119,21 +91,15 @@
             border-bottom: 3px solid transparent;
             transition: all 0.2s;
         }
-        
-        .nav a:hover,
-        .nav a.active {
+        .nav a:hover, .nav a.active {
             color: var(--accent);
             border-bottom-color: var(--accent);
         }
-        
-        /* Main Content */
         .main {
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
-        
-        /* Rankings Table */
         .rankings-table {
             width: 100%;
             background: white;
@@ -141,7 +107,6 @@
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        
         .rankings-table th {
             background: var(--primary);
             color: white;
@@ -149,16 +114,11 @@
             text-align: left;
             font-weight: 600;
         }
-        
         .rankings-table td {
             padding: 1rem;
             border-bottom: 1px solid #e2e8f0;
         }
-        
-        .rankings-table tr:hover {
-            background: #f7fafc;
-        }
-        
+        .rankings-table tr:hover { background: #f7fafc; }
         .rank {
             font-family: 'Playfair Display', serif;
             font-size: 1.25rem;
@@ -166,29 +126,23 @@
             color: var(--accent);
             width: 60px;
         }
-        
         .team-name {
             font-weight: 600;
             color: var(--primary);
         }
-        
         .conference {
             font-size: 0.875rem;
             color: #718096;
         }
-        
         .record {
             font-weight: 600;
             text-align: center;
         }
-        
         .score {
             font-weight: 700;
             text-align: right;
             color: var(--primary);
         }
-        
-        /* Footer */
         .footer {
             background: var(--primary);
             color: white;
@@ -196,23 +150,17 @@
             margin-top: 3rem;
             text-align: center;
         }
-        
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
         }
-        
         .footer-brand {
             font-family: 'Playfair Display', serif;
             font-size: 1.25rem;
             margin-bottom: 0.5rem;
         }
-        
-        .footer-brand span {
-            color: var(--gold);
-        }
-        
+        .footer-brand span { color: var(--gold); }
         .footer-links {
             display: flex;
             justify-content: center;
@@ -220,18 +168,13 @@
             margin: 1rem 0;
             flex-wrap: wrap;
         }
-        
         .footer-links a {
             color: rgba(255,255,255,0.8);
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.2s;
         }
-        
-        .footer-links a:hover {
-            color: var(--gold);
-        }
-        
+        .footer-links a:hover { color: var(--gold); }
         .footer-disclaimer {
             font-size: 0.8rem;
             opacity: 0.7;
@@ -240,24 +183,14 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
-        /* Responsive */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
                 text-align: center;
                 gap: 1rem;
             }
-            
-            .logo {
-                width: 80px;
-                height: 80px;
-            }
-            
-            .brand-name {
-                font-size: 1.5rem;
-            }
-            
+            .logo { width: 80px; height: 80px; }
+            .brand-name { font-size: 1.5rem; }
             .nav-content {
                 overflow-x: auto;
                 gap: 1rem;
@@ -266,7 +199,6 @@
     </style>
 </head>
 <body>
-    <!-- Header with Logo -->
     <header class="header">
         <div class="header-content">
             <div class="logo">
@@ -278,8 +210,6 @@
             </div>
         </div>
     </header>
-    
-    <!-- Navigation -->
     <nav class="nav">
         <div class="nav-content">
             <a href="#" class="active">Rankings</a>
@@ -289,13 +219,10 @@
             <a href="#">About the Model</a>
         </div>
     </nav>
-    
-    <!-- Main Content -->
     <main class="main">
         <h1 style="font-family: 'Playfair Display', serif; margin-bottom: 1.5rem; color: var(--primary);">
-            Week 1 Rankings — 2025 Season
+            Week 14 Rankings — 2024 Season
         </h1>
-        
         <table class="rankings-table">
             <thead>
                 <tr>
@@ -307,39 +234,234 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Sample data — replace with actual rankings -->
                 <tr>
                     <td class="rank">1</td>
-                    <td>
-                        <div class="team-name">Georgia</div>
-                    </td>
-                    <td class="conference">SEC</td>
-                    <td class="record">1-0</td>
-                    <td class="score">94.2</td>
-                </tr>
-                <tr>
-                    <td class="rank">2</td>
                     <td>
                         <div class="team-name">Ohio State</div>
                     </td>
                     <td class="conference">Big Ten</td>
-                    <td class="record">1-0</td>
-                    <td class="score">92.8</td>
+                    <td class="record">14-2</td>
+                    <td class="score">64.6</td>
+                </tr>
+                <tr>
+                    <td class="rank">2</td>
+                    <td>
+                        <div class="team-name">Notre Dame</div>
+                    </td>
+                    <td class="conference">FBS Independents</td>
+                    <td class="record">14-2</td>
+                    <td class="score">62.1</td>
                 </tr>
                 <tr>
                     <td class="rank">3</td>
                     <td>
+                        <div class="team-name">Oregon</div>
+                    </td>
+                    <td class="conference">Big Ten</td>
+                    <td class="record">11-1</td>
+                    <td class="score">61.8</td>
+                </tr>
+                <tr>
+                    <td class="rank">4</td>
+                    <td>
+                        <div class="team-name">Penn State</div>
+                    </td>
+                    <td class="conference">Big Ten</td>
+                    <td class="record">13-2</td>
+                    <td class="score">61.7</td>
+                </tr>
+                <tr>
+                    <td class="rank">5</td>
+                    <td>
                         <div class="team-name">Texas</div>
                     </td>
                     <td class="conference">SEC</td>
-                    <td class="record">1-0</td>
-                    <td class="score">91.5</td>
+                    <td class="record">13-2</td>
+                    <td class="score">61.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">6</td>
+                    <td>
+                        <div class="team-name">Boise State</div>
+                    </td>
+                    <td class="conference">Mountain West</td>
+                    <td class="record">10-2</td>
+                    <td class="score">57.0</td>
+                </tr>
+                <tr>
+                    <td class="rank">7</td>
+                    <td>
+                        <div class="team-name">Army</div>
+                    </td>
+                    <td class="conference">American Athletic</td>
+                    <td class="record">10-1</td>
+                    <td class="score">56.5</td>
+                </tr>
+                <tr>
+                    <td class="rank">8</td>
+                    <td>
+                        <div class="team-name">Indiana</div>
+                    </td>
+                    <td class="conference">Big Ten</td>
+                    <td class="record">10-2</td>
+                    <td class="score">55.8</td>
+                </tr>
+                <tr>
+                    <td class="rank">9</td>
+                    <td>
+                        <div class="team-name">SMU</div>
+                    </td>
+                    <td class="conference">ACC</td>
+                    <td class="record">10-2</td>
+                    <td class="score">55.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">10</td>
+                    <td>
+                        <div class="team-name">Iowa State</div>
+                    </td>
+                    <td class="conference">Big 12</td>
+                    <td class="record">10-2</td>
+                    <td class="score">54.8</td>
+                </tr>
+                <tr>
+                    <td class="rank">11</td>
+                    <td>
+                        <div class="team-name">BYU</div>
+                    </td>
+                    <td class="conference">Big 12</td>
+                    <td class="record">10-2</td>
+                    <td class="score">54.8</td>
+                </tr>
+                <tr>
+                    <td class="rank">12</td>
+                    <td>
+                        <div class="team-name">UNLV</div>
+                    </td>
+                    <td class="conference">Mountain West</td>
+                    <td class="record">10-2</td>
+                    <td class="score">53.7</td>
+                </tr>
+                <tr>
+                    <td class="rank">13</td>
+                    <td>
+                        <div class="team-name">Georgia</div>
+                    </td>
+                    <td class="conference">SEC</td>
+                    <td class="record">9-3</td>
+                    <td class="score">52.8</td>
+                </tr>
+                <tr>
+                    <td class="rank">14</td>
+                    <td>
+                        <div class="team-name">Miami</div>
+                    </td>
+                    <td class="conference">ACC</td>
+                    <td class="record">9-3</td>
+                    <td class="score">52.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">15</td>
+                    <td>
+                        <div class="team-name">Ole Miss</div>
+                    </td>
+                    <td class="conference">SEC</td>
+                    <td class="record">9-3</td>
+                    <td class="score">51.9</td>
+                </tr>
+                <tr>
+                    <td class="rank">16</td>
+                    <td>
+                        <div class="team-name">Arizona State</div>
+                    </td>
+                    <td class="conference">Big 12</td>
+                    <td class="record">10-3</td>
+                    <td class="score">51.3</td>
+                </tr>
+                <tr>
+                    <td class="rank">17</td>
+                    <td>
+                        <div class="team-name">Memphis</div>
+                    </td>
+                    <td class="conference">American Athletic</td>
+                    <td class="record">10-2</td>
+                    <td class="score">51.2</td>
+                </tr>
+                <tr>
+                    <td class="rank">18</td>
+                    <td>
+                        <div class="team-name">Tennessee</div>
+                    </td>
+                    <td class="conference">SEC</td>
+                    <td class="record">9-3</td>
+                    <td class="score">51.1</td>
+                </tr>
+                <tr>
+                    <td class="rank">19</td>
+                    <td>
+                        <div class="team-name">Alabama</div>
+                    </td>
+                    <td class="conference">SEC</td>
+                    <td class="record">8-4</td>
+                    <td class="score">51.1</td>
+                </tr>
+                <tr>
+                    <td class="rank">20</td>
+                    <td>
+                        <div class="team-name">Illinois</div>
+                    </td>
+                    <td class="conference">Big Ten</td>
+                    <td class="record">9-3</td>
+                    <td class="score">50.3</td>
+                </tr>
+                <tr>
+                    <td class="rank">21</td>
+                    <td>
+                        <div class="team-name">Michigan</div>
+                    </td>
+                    <td class="conference">Big Ten</td>
+                    <td class="record">8-5</td>
+                    <td class="score">49.6</td>
+                </tr>
+                <tr>
+                    <td class="rank">22</td>
+                    <td>
+                        <div class="team-name">Syracuse</div>
+                    </td>
+                    <td class="conference">ACC</td>
+                    <td class="record">9-3</td>
+                    <td class="score">49.3</td>
+                </tr>
+                <tr>
+                    <td class="rank">23</td>
+                    <td>
+                        <div class="team-name">South Carolina</div>
+                    </td>
+                    <td class="conference">SEC</td>
+                    <td class="record">8-4</td>
+                    <td class="score">49.3</td>
+                </tr>
+                <tr>
+                    <td class="rank">24</td>
+                    <td>
+                        <div class="team-name">Louisville</div>
+                    </td>
+                    <td class="conference">ACC</td>
+                    <td class="record">8-4</td>
+                    <td class="score">49.0</td>
+                </tr>
+                <tr>
+                    <td class="rank">25</td>
+                    <td>
+                        <div class="team-name">Ohio</div>
+                    </td>
+                    <td class="conference">Mid-American</td>
+                    <td class="record">9-3</td>
+                    <td class="score">47.8</td>
                 </tr>
             </tbody>
         </table>
     </main>
-    
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">TJC <span>Rankings</span></div>
@@ -350,7 +472,7 @@
                 <a href="#">Methodology</a>
             </div>
             <div class="footer-disclaimer">
-                Rankings generated algorithmically. No human bias, no conference favoritism — just math. 
+                Rankings generated algorithmically. No human bias, no conference favoritism — just math.
                 Data corrections welcome via GitHub issues.
             </div>
         </div>
