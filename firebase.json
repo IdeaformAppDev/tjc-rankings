@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "tjcrankings",
-    "public": "web",
+    "public": "docs",
     "ignore": [
       "firebase.json",
       "**/.*",
