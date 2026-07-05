@@ -62,7 +62,9 @@ firebase deploy --only hosting:tjcrankings
 
 ```
 CollegeFootballRanking/
-├── assets/              # Logo, favicons
+├── web/
+│   ├── index.html
+│   └── assets/              # Logo, favicons
 │   ├── tjc-rankings-logo.png
 │   ├── favicon-*.png
 │   └── apple-touch-icon.png
@@ -73,7 +75,6 @@ CollegeFootballRanking/
 │   ├── rankings.py
 │   └── report.py
 ├── web/                 # Static site
-│   └── index.html
 ├── tests/               # Unit tests
 └── reports/             # Generated weekly reports
 ```
