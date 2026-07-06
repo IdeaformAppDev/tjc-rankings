@@ -50,12 +50,12 @@ class RankingEngine:
     
     # Weights from spec
     WEIGHTS = {
-        'win_loss': 0.20,
-        'sos': 0.20,
-        'sor': 0.15,
+        'win_loss': 0.15,
+        'sos': 0.25,
+        'sor': 0.18,
         'point_diff': 0.10,
         'def_eff': 0.10,
-        'qual_wins': 0.10,
+        'qual_wins': 0.07,
         'champ_behavior': 0.10,
         'special_teams': 0.03,
         'ball_control': 0.02
@@ -189,17 +189,25 @@ class RankingEngine:
             else:
                 tm.sor_score = 50.0
     
-    def calculate_point_diff(self, team_metrics: Dict[str, TeamMetrics]) -> None:
-        """Calculate point differential with 28-point cap."""
-        differentials = []
-        
+    def calculate_point_diff(self, team_metrics: Dict[str, TeamMetrics],
+                            games: List[sqlite3.Row]) -> None:
+        """Calculate point differential with 35-point cap per game."""
         for tm in team_metrics.values():
-            if tm.games_played > 0:
-                avg_diff = (tm.points_for - tm.points_against) / tm.games_played
-                # Cap at ±28
-                capped_diff = max(-28, min(28, avg_diff))
-                # Scale to 0-100: -28 = 0, 0 = 50, +28 = 100
-                tm.point_diff_score = (capped_diff + 28) / 56 * 100
+            team_games = self.get_team_games(tm.team_name, games)
+            capped_diffs = []
+            
+            for game in team_games:
+                team_pts = self.get_team_points(game, tm.team_name)
+                opp_pts = self.get_opponent_points(game, tm.team_name)
+                diff = team_pts - opp_pts
+                # Cap individual game margin at ±35 (blowout penalty)
+                capped = max(-35, min(35, diff))
+                capped_diffs.append(capped)
+            
+            if capped_diffs:
+                avg_diff = sum(capped_diffs) / len(capped_diffs)
+                # Scale to 0-100: -35 = 0, 0 = 50, +35 = 100
+                tm.point_diff_score = (avg_diff + 35) / 70 * 100
             else:
                 tm.point_diff_score = 50.0
     
@@ -456,7 +464,7 @@ class RankingEngine:
             self.calculate_win_loss(team_metrics)
             self.calculate_sos(team_metrics, games)
             self.calculate_sor(team_metrics)
-            self.calculate_point_diff(team_metrics)
+            self.calculate_point_diff(team_metrics, games)
             self.calculate_def_eff(team_metrics, games)
             self.calculate_qual_wins(team_metrics, games)
             self.calculate_champ_behavior(team_metrics, games)
