@@ -320,7 +320,7 @@ footer_html = """
 """
 
 def generate_rankings_table(results, season, week):
-    html = f'<h1 style="font-family: \'Playfair Display\', serif; margin-bottom: 1.5rem; color: var(--primary);">Week {week} Rankings — {season} Season</h1>\n'
+    html = f'<h1 style="font-family: \'Playfair Display\', serif; margin-bottom: 1.5rem; color: var(--primary);">Final Rankings — {season} Season</h1>\n'
     html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conference</th><th>Record</th><th style="text-align: right;">Score</th></tr>\n</thead>\n<tbody>\n'
     
     for rank, team in enumerate(results[:25], 1):
