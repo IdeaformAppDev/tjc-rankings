@@ -225,17 +225,19 @@ class RankingEngine:
                 margin = abs(self.get_team_points(game, tm.team_name) - 
                            self.get_opponent_points(game, tm.team_name))
                 
-                # Tiered scoring based on opponent rank
-                # Use composite score as proxy for ranking
-                if opp.composite_score >= 85:  # Approx top 10
+                # Tiered scoring based on opponent composite score
+                # Thresholds based on actual score distribution (top score ~70)
+                if opp.composite_score >= 60:  # Approx top 5
                     qual_points += 10
-                elif opp.composite_score >= 75:  # Approx top 25
+                elif opp.composite_score >= 55:  # Approx top 10
                     qual_points += 7
-                elif opp.composite_score >= 65:  # Approx top 40
+                elif opp.composite_score >= 50:  # Approx top 20
                     qual_points += 4
+                elif opp.composite_score >= 45:  # Approx top 30
+                    qual_points += 2
                 
                 # Close losses to quality opponents
-                if margin <= 7 and opp.composite_score >= 75:
+                if margin <= 7 and opp.composite_score >= 50:
                     qual_points += 2
             
             # Normalize to 0-100 (cap at ~50 points max)
