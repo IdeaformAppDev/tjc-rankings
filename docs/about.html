@@ -126,8 +126,9 @@
             font-weight: 600;
         }
         .rankings-table td {
-            padding: 1rem;
+            padding: 0.75rem 0.5rem;
             border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
         }
         .rankings-table tr:hover { background: #f7fafc; }
         .rank {
@@ -158,6 +159,31 @@
             font-weight: 700;
             text-align: right;
             color: var(--primary);
+        }
+        .metric-cell {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .metric-high { color: #38a169; font-weight: 600; }
+        .metric-mid { color: #d69e2e; }
+        .metric-low { color: var(--accent); }
+        .metrics-legend {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .metrics-legend h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .metrics-legend p {
+            font-size: 0.85rem;
+            color: #718096;
+            line-height: 1.5;
         }
         .footer {
             background: var(--primary);
@@ -450,7 +476,6 @@
             <div class="footer-brand">TJC <span>Rankings</span></div>
             <div class="footer-links">
                 <a href="about.html">About the Model</a>
-            <a href="trends-2025.html">Trends</a>
                 <a href="#">Data Sources</a>
                 <a href="https://github.com/IdeaformAppDev/tjc-rankings" target="_blank">GitHub ↗</a>
                 <a href="about.html">Methodology</a>

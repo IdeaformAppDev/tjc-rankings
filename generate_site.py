@@ -146,8 +146,9 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
             font-weight: 600;
         }}
         .rankings-table td {{
-            padding: 1rem;
+            padding: 0.75rem 0.5rem;
             border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
         }}
         .rankings-table tr:hover {{ background: #f7fafc; }}
         .rank {{
@@ -178,6 +179,31 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
             font-weight: 700;
             text-align: right;
             color: var(--primary);
+        }}
+        .metric-cell {{
+            text-align: center;
+            font-size: 0.85rem;
+        }}
+        .metric-high {{ color: #38a169; font-weight: 600; }}
+        .metric-mid {{ color: #d69e2e; }}
+        .metric-low {{ color: var(--accent); }}
+        .metrics-legend {{
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }}
+        .metrics-legend h3 {{
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }}
+        .metrics-legend p {{
+            font-size: 0.85rem;
+            color: #718096;
+            line-height: 1.5;
         }}
         .footer {{
             background: var(--primary);
@@ -451,12 +477,36 @@ def slugify(name):
 
 def generate_rankings_table(results, season, week):
     html = f'<h1 style="font-family: \'Playfair Display\', serif; margin-bottom: 1.5rem; color: var(--primary);">Final Rankings — {season} Season</h1>\n'
-    html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conference</th><th>Record</th><th style="text-align: right;">Score</th></tr>\n</thead>\n<tbody>\n'
+    
+    # Metrics legend
+    html += '<div class="metrics-legend">\n'
+    html += '<h3>📊 Understanding the Metrics</h3>\n'
+    html += '<p><strong>WL:</strong> Win/Loss (20%) • <strong>SOS:</strong> Strength of Schedule (20%) • <strong>SOR:</strong> Strength of Record (15%) • <strong>PD:</strong> Point Differential (10%) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (10%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>\n'
+    html += '</div>\n'
+    
+    html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th><th class="metric-cell">ST</th><th class="metric-cell">BC</th></tr>\n</thead>\n<tbody>\n'
     
     for rank, team in enumerate(results[:25], 1):
         record = f"{team.wins}-{team.losses}"
         team_slug = slugify(team.team_name)
-        html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a></td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td></tr>\n'
+        
+        # Color-code metrics
+        def metric_class(score):
+            if score >= 75: return 'metric-high'
+            elif score >= 50: return 'metric-mid'
+            else: return 'metric-low'
+        
+        html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a></td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.win_loss_score)}">{team.win_loss_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.sos_score)}">{team.sos_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.sor_score)}">{team.sor_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.point_diff_score)}">{team.point_diff_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.def_eff_score)}">{team.def_eff_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.qual_wins_score)}">{team.qual_wins_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.champ_behavior_score)}">{team.champ_behavior_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.special_teams_score)}">{team.special_teams_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.ball_control_score)}">{team.ball_control_score:.0f}</td>'
+        html += '</tr>\n'
     
     html += '</tbody>\n</table>\n'
     return html
@@ -546,6 +596,23 @@ def generate_team_page(team, season, results):
     html += f'<div class="stat-card"><div class="stat-value">{points_against}</div><div class="stat-label">Points Against</div></div>\n'
     html += f'<div class="stat-card"><div class="stat-value">{points_for - points_against:+d}</div><div class="stat-label">Point Diff</div></div>\n'
     html += f'<div class="stat-card"><div class="stat-value">{total_games}</div><div class="stat-label">Games Played</div></div>\n'
+    html += '</div>\n'
+    
+    # Metrics breakdown
+    html += '<h2 style="font-family: \'Playfair Display\', serif; margin-bottom: 1rem; color: var(--primary);">Metric Breakdown</h2>\n'
+    html += '<div class="content-section" style="margin-bottom: 2rem;">\n'
+    html += '<p style="margin-bottom: 1rem; color: #718096; font-size: 0.9rem;">How {team.team_name} scores across all 9 factors (0-100 scale). Higher is better.</p>\n'
+    html += '<ul class="metric-list">\n'
+    html += f'<li>Win/Loss Record (20%) <span class="metric-weight">{team.win_loss_score:.1f}</span></li>\n'
+    html += f'<li>Strength of Schedule (20%) <span class="metric-weight">{team.sos_score:.1f}</span></li>\n'
+    html += f'<li>Strength of Record (15%) <span class="metric-weight">{team.sor_score:.1f}</span></li>\n'
+    html += f'<li>Point Differential (10%) <span class="metric-weight">{team.point_diff_score:.1f}</span></li>\n'
+    html += f'<li>Defensive Efficiency (10%) <span class="metric-weight">{team.def_eff_score:.1f}</span></li>\n'
+    html += f'<li>Quality Wins (10%) <span class="metric-weight">{team.qual_wins_score:.1f}</span></li>\n'
+    html += f'<li>Championship Behavior (10%) <span class="metric-weight">{team.champ_behavior_score:.1f}</span></li>\n'
+    html += f'<li>Special Teams (3%) <span class="metric-weight">{team.special_teams_score:.1f}</span></li>\n'
+    html += f'<li>Ball Control (2%) <span class="metric-weight">{team.ball_control_score:.1f}</span></li>\n'
+    html += '</ul>\n'
     html += '</div>\n'
     
     # Social sharing

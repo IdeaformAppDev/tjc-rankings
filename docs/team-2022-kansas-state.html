@@ -126,8 +126,9 @@
             font-weight: 600;
         }
         .rankings-table td {
-            padding: 1rem;
+            padding: 0.75rem 0.5rem;
             border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
         }
         .rankings-table tr:hover { background: #f7fafc; }
         .rank {
@@ -158,6 +159,31 @@
             font-weight: 700;
             text-align: right;
             color: var(--primary);
+        }
+        .metric-cell {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .metric-high { color: #38a169; font-weight: 600; }
+        .metric-mid { color: #d69e2e; }
+        .metric-low { color: var(--accent); }
+        .metrics-legend {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .metrics-legend h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .metrics-legend p {
+            font-size: 0.85rem;
+            color: #718096;
+            line-height: 1.5;
         }
         .footer {
             background: var(--primary);
@@ -391,7 +417,6 @@
             <a href="index.html">Rankings</a>
             <a href="conferences.html">Conferences</a>
             <a href="about.html">About the Model</a>
-            <a href="trends-2025.html">Trends</a>
             <select class="season-dropdown" onchange="window.location.href=this.value">
                 <option value="">Past Seasons</option>
                 <option value="2025.html">2025</option>
@@ -417,6 +442,21 @@
 <div class="stat-card"><div class="stat-value">306</div><div class="stat-label">Points Against</div></div>
 <div class="stat-card"><div class="stat-value">+112</div><div class="stat-label">Point Diff</div></div>
 <div class="stat-card"><div class="stat-value">13</div><div class="stat-label">Games Played</div></div>
+</div>
+<h2 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem; color: var(--primary);">Metric Breakdown</h2>
+<div class="content-section" style="margin-bottom: 2rem;">
+<p style="margin-bottom: 1rem; color: #718096; font-size: 0.9rem;">How {team.team_name} scores across all 9 factors (0-100 scale). Higher is better.</p>
+<ul class="metric-list">
+<li>Win/Loss Record (20%) <span class="metric-weight">69.2</span></li>
+<li>Strength of Schedule (20%) <span class="metric-weight">57.2</span></li>
+<li>Strength of Record (15%) <span class="metric-weight">48.5</span></li>
+<li>Point Differential (10%) <span class="metric-weight">65.4</span></li>
+<li>Defensive Efficiency (10%) <span class="metric-weight">62.8</span></li>
+<li>Quality Wins (10%) <span class="metric-weight">0.0</span></li>
+<li>Championship Behavior (10%) <span class="metric-weight">23.0</span></li>
+<li>Special Teams (3%) <span class="metric-weight">50.0</span></li>
+<li>Ball Control (2%) <span class="metric-weight">50.0</span></li>
+</ul>
 </div>
 <div class="share-section">
 <div class="share-title">Share these rankings</div>
@@ -454,7 +494,6 @@
             <div class="footer-brand">TJC <span>Rankings</span></div>
             <div class="footer-links">
                 <a href="about.html">About the Model</a>
-            <a href="trends-2025.html">Trends</a>
                 <a href="#">Data Sources</a>
                 <a href="https://github.com/IdeaformAppDev/tjc-rankings" target="_blank">GitHub ↗</a>
                 <a href="about.html">Methodology</a>
