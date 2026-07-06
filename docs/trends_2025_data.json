@@ -1,0 +1,317 @@
+{
+  "season": 2025,
+  "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "top_teams": [
+    {
+      "team": "Indiana",
+      "conference": "Big Ten",
+      "ranks": [
+        2,
+        3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "team": "Ohio State",
+      "conference": "Big Ten",
+      "ranks": [
+        43,
+        39,
+        15,
+        13,
+        4,
+        3,
+        3,
+        2,
+        2,
+        3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "team": "Oregon",
+      "conference": "Big Ten",
+      "ranks": [
+        78,
+        41,
+        24,
+        23,
+        10,
+        8,
+        13,
+        10,
+        11,
+        8,
+        4,
+        5,
+        4,
+        3,
+        3,
+        3
+      ]
+    },
+    {
+      "team": "Miami",
+      "conference": "ACC",
+      "ranks": [
+        12,
+        10,
+        8,
+        5,
+        3,
+        2,
+        2,
+        4,
+        4,
+        4,
+        5,
+        4,
+        5,
+        5,
+        4,
+        4
+      ]
+    },
+    {
+      "team": "Georgia",
+      "conference": "SEC",
+      "ranks": [
+        76,
+        59,
+        47,
+        29,
+        43,
+        34,
+        17,
+        14,
+        15,
+        14,
+        11,
+        7,
+        11,
+        8,
+        5,
+        5
+      ]
+    },
+    {
+      "team": "Texas Tech",
+      "conference": "Big 12",
+      "ranks": [
+        123,
+        69,
+        56,
+        31,
+        25,
+        14,
+        7,
+        21,
+        20,
+        16,
+        10,
+        10,
+        10,
+        6,
+        6,
+        6
+      ]
+    },
+    {
+      "team": "James Madison",
+      "conference": "Sun Belt",
+      "ranks": [
+        128,
+        104,
+        103,
+        77,
+        56,
+        54,
+        46,
+        28,
+        26,
+        21,
+        16,
+        14,
+        14,
+        11,
+        7,
+        7
+      ]
+    },
+    {
+      "team": "Notre Dame",
+      "conference": "FBS Independents",
+      "ranks": [
+        102,
+        99,
+        102,
+        65,
+        42,
+        33,
+        19,
+        13,
+        17,
+        20,
+        12,
+        11,
+        8,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "team": "Ole Miss",
+      "conference": "SEC",
+      "ranks": [
+        20,
+        13,
+        9,
+        8,
+        5,
+        6,
+        5,
+        11,
+        9,
+        11,
+        7,
+        8,
+        9,
+        10,
+        9,
+        9
+      ]
+    },
+    {
+      "team": "BYU",
+      "conference": "Big 12",
+      "ranks": [
+        8,
+        14,
+        5,
+        3,
+        2,
+        4,
+        4,
+        3,
+        3,
+        2,
+        3,
+        3,
+        3,
+        4,
+        10,
+        10
+      ]
+    }
+  ],
+  "biggest_risers": [
+    {
+      "team": "Oklahoma",
+      "week1": 138,
+      "week16": 12,
+      "change": 126,
+      "conference": "SEC"
+    },
+    {
+      "team": "James Madison",
+      "week1": 128,
+      "week16": 7,
+      "change": 121,
+      "conference": "Sun Belt"
+    },
+    {
+      "team": "Texas Tech",
+      "week1": 123,
+      "week16": 6,
+      "change": 117,
+      "conference": "Big 12"
+    },
+    {
+      "team": "Notre Dame",
+      "week1": 102,
+      "week16": 8,
+      "change": 94,
+      "conference": "FBS Independents"
+    },
+    {
+      "team": "Boise State",
+      "week1": 134,
+      "week16": 47,
+      "change": 87,
+      "conference": "Mountain West"
+    }
+  ],
+  "biggest_fallers": [
+    {
+      "team": "Purdue",
+      "week1": 24,
+      "week16": 126,
+      "change": -102,
+      "conference": "Big Ten"
+    },
+    {
+      "team": "Michigan State",
+      "week1": 3,
+      "week16": 103,
+      "change": -100,
+      "conference": "Big Ten"
+    },
+    {
+      "team": "Kansas",
+      "week1": 1,
+      "week16": 87,
+      "change": -86,
+      "conference": "Big 12"
+    },
+    {
+      "team": "Maryland",
+      "week1": 23,
+      "week16": 109,
+      "change": -86,
+      "conference": "Big Ten"
+    },
+    {
+      "team": "UCF",
+      "week1": 6,
+      "week16": 91,
+      "change": -85,
+      "conference": "Big 12"
+    }
+  ]
+}

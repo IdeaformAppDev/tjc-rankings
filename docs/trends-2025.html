@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trends — 2025 Season — TJC Rankings</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #c53030;
+            --gold: #d69e2e;
+            --bg: #f7fafc;
+            --text: #2d3748;
+            --green: #38a169;
+            --red: #c53030;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            background: white;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        .brand-text { flex: 1; }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .brand-name span { color: var(--gold); }
+        .brand-tagline {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+        .nav {
+            background: white;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            padding: 0.5rem 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .season-dropdown {
+            margin-left: auto;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .trends-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .trends-table th {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .trends-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .trends-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+        .trends-table tr:hover { background: #f7fafc; }
+        .rank-stable { color: #718096; }
+        .rank-up { color: var(--green); font-weight: 600; }
+        .rank-down { color: var(--red); font-weight: 600; }
+        .rank-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 50%;
+            font-size: 0.85rem;
+        }
+        .rank-top { background: var(--gold); color: white; }
+        .rank-good { background: #e6fffa; color: #234e52; }
+        .rank-mid { background: #fffaf0; color: #744210; }
+        .rank-lower { background: #fed7d7; color: #742a2a; }
+        .movers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .mover-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .mover-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .mover-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .mover-team { font-weight: 600; }
+        .mover-change {
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        .mover-up { background: #c6f6d5; color: #22543d; }
+        .mover-down { background: #fed7d7; color: #742a2a; }
+        .mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 40px;
+            margin-top: 0.5rem;
+        }
+        .mini-bar {
+            flex: 1;
+            background: var(--primary);
+            opacity: 0.7;
+            border-radius: 2px 2px 0 0;
+        }
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer-brand span { color: var(--gold); }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-disclaimer {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .logo { width: 80px; height: 80px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-content {
+                overflow-x: auto;
+                gap: 1rem;
+            }
+            .season-dropdown { margin-left: 0; }
+            .trends-table th, .trends-table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/tjc-rankings-logo.png" alt="TJC Rankings Logo">
+            </div>
+            <div class="brand-text">
+                <div class="brand-name">TJC <span>Rankings</span></div>
+                <div class="brand-tagline">Computer College Football Rankings</div>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html">Rankings</a>
+            <a href="conferences.html">Conferences</a>
+            <a href="about.html">About the Model</a>
+            <a href="trends-2025.html">Trends</a>
+            <a href="trends-2025.html" class="active">Trends</a>
+            <select class="season-dropdown" onchange="window.location.href=this.value">
+                <option value="">Past Seasons</option>
+                <option value="2025.html">2025</option>
+                <option value="2024.html">2024</option>
+                <option value="2023.html">2023</option>
+                <option value="2022.html">2022</option>
+                <option value="2021.html">2021</option>
+            </select>
+        </div>
+    </nav>
+    <main class="main">
+        <h1>Rankings Trends — 2025 Season</h1>
+        
+        <div class="content-section">
+            <h2>Top 10 Teams — Week by Week</h2>
+            <p style="margin-bottom: 1rem; color: #718096;">How the top teams moved through the season. Lower numbers are better (rank #1 is top).</p>
+            <table class="trends-table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>W1</th>
+                        <th>W2</th>
+                        <th>W3</th>
+                        <th>W4</th>
+                        <th>W5</th>
+                        <th>W6</th>
+                        <th>W7</th>
+                        <th>W8</th>
+                        <th>W9</th>
+                        <th>W10</th>
+                        <th>W11</th>
+                        <th>W12</th>
+                        <th>W13</th>
+                        <th>W14</th>
+                        <th>W15</th>
+                        <th>W16</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Indiana</td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">1</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>Ohio State</td>
+                        <td><span class="rank-number rank-lower">43</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-lower">39</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-good">15</span> <span class="rank-up">↑24</span></td>
+                        <td><span class="rank-number rank-good">13</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-up">↑9</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>Oregon</td>
+                        <td><span class="rank-number rank-lower">78</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-lower">41</span> <span class="rank-up">↑37</span></td>
+                        <td><span class="rank-number rank-mid">24</span> <span class="rank-up">↑17</span></td>
+                        <td><span class="rank-number rank-mid">23</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-up">↑13</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-good">13</span> <span class="rank-down">↓5</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-good">11</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>Miami</td>
+                        <td><span class="rank-number rank-good">12</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-down">↓2</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>Georgia</td>
+                        <td><span class="rank-number rank-lower">76</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-lower">59</span> <span class="rank-up">↑17</span></td>
+                        <td><span class="rank-number rank-lower">47</span> <span class="rank-up">↑12</span></td>
+                        <td><span class="rank-number rank-lower">29</span> <span class="rank-up">↑18</span></td>
+                        <td><span class="rank-number rank-lower">43</span> <span class="rank-down">↓14</span></td>
+                        <td><span class="rank-number rank-lower">34</span> <span class="rank-up">↑9</span></td>
+                        <td><span class="rank-number rank-mid">17</span> <span class="rank-up">↑17</span></td>
+                        <td><span class="rank-number rank-good">14</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-good">15</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-good">14</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-good">11</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-good">7</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-good">11</span> <span class="rank-down">↓4</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>Texas Tech</td>
+                        <td><span class="rank-number rank-lower">123</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-lower">69</span> <span class="rank-up">↑54</span></td>
+                        <td><span class="rank-number rank-lower">56</span> <span class="rank-up">↑13</span></td>
+                        <td><span class="rank-number rank-lower">31</span> <span class="rank-up">↑25</span></td>
+                        <td><span class="rank-number rank-mid">25</span> <span class="rank-up">↑6</span></td>
+                        <td><span class="rank-number rank-good">14</span> <span class="rank-up">↑11</span></td>
+                        <td><span class="rank-number rank-good">7</span> <span class="rank-up">↑7</span></td>
+                        <td><span class="rank-number rank-mid">21</span> <span class="rank-down">↓14</span></td>
+                        <td><span class="rank-number rank-mid">20</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-mid">16</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-up">↑6</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-good">6</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-good">6</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-good">6</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>James Madison</td>
+                        <td><span class="rank-number rank-lower">128</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-lower">104</span> <span class="rank-up">↑24</span></td>
+                        <td><span class="rank-number rank-lower">103</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-lower">77</span> <span class="rank-up">↑26</span></td>
+                        <td><span class="rank-number rank-lower">56</span> <span class="rank-up">↑21</span></td>
+                        <td><span class="rank-number rank-lower">54</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-lower">46</span> <span class="rank-up">↑8</span></td>
+                        <td><span class="rank-number rank-lower">28</span> <span class="rank-up">↑18</span></td>
+                        <td><span class="rank-number rank-lower">26</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-mid">21</span> <span class="rank-up">↑5</span></td>
+                        <td><span class="rank-number rank-mid">16</span> <span class="rank-up">↑5</span></td>
+                        <td><span class="rank-number rank-good">14</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-good">14</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-good">11</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-good">7</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-good">7</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>Notre Dame</td>
+                        <td><span class="rank-number rank-lower">102</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-lower">99</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-lower">102</span> <span class="rank-down">↓3</span></td>
+                        <td><span class="rank-number rank-lower">65</span> <span class="rank-up">↑37</span></td>
+                        <td><span class="rank-number rank-lower">42</span> <span class="rank-up">↑23</span></td>
+                        <td><span class="rank-number rank-lower">33</span> <span class="rank-up">↑9</span></td>
+                        <td><span class="rank-number rank-mid">19</span> <span class="rank-up">↑14</span></td>
+                        <td><span class="rank-number rank-good">13</span> <span class="rank-up">↑6</span></td>
+                        <td><span class="rank-number rank-mid">17</span> <span class="rank-down">↓4</span></td>
+                        <td><span class="rank-number rank-mid">20</span> <span class="rank-down">↓3</span></td>
+                        <td><span class="rank-number rank-good">12</span> <span class="rank-up">↑8</span></td>
+                        <td><span class="rank-number rank-good">11</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-good">9</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>Ole Miss</td>
+                        <td><span class="rank-number rank-mid">20</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-good">13</span> <span class="rank-up">↑7</span></td>
+                        <td><span class="rank-number rank-good">9</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-up">↑3</span></td>
+                        <td><span class="rank-number rank-good">6</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-good">11</span> <span class="rank-down">↓6</span></td>
+                        <td><span class="rank-number rank-good">9</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-good">11</span> <span class="rank-down">↓2</span></td>
+                        <td><span class="rank-number rank-good">7</span> <span class="rank-up">↑4</span></td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-good">9</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-good">9</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-good">9</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                    <tr>
+                        <td>BYU</td>
+                        <td><span class="rank-number rank-good">8</span> <span class="rank-stable"></span></td>
+                        <td><span class="rank-number rank-good">14</span> <span class="rank-down">↓6</span></td>
+                        <td><span class="rank-number rank-top">5</span> <span class="rank-up">↑9</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-up">↑2</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-down">↓2</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">2</span> <span class="rank-up">↑1</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">3</span> <span class="rank-stable">—</span></td>
+                        <td><span class="rank-number rank-top">4</span> <span class="rank-down">↓1</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-down">↓6</span></td>
+                        <td><span class="rank-number rank-good">10</span> <span class="rank-stable">—</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="movers-grid">
+            <div class="mover-card">
+                <h2>🔥 Biggest Risers</h2>
+                <p style="margin-bottom: 1rem; color: #718096; font-size: 0.9rem;">Teams that climbed the most from Week 1 to Week 16</p>
+                <div class="mover-item">
+                    <span class="mover-team">Oklahoma</span>
+                    <span class="mover-change mover-up">138 → 12 (+126)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">James Madison</span>
+                    <span class="mover-change mover-up">128 → 7 (+121)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">Texas Tech</span>
+                    <span class="mover-change mover-up">123 → 6 (+117)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">Notre Dame</span>
+                    <span class="mover-change mover-up">102 → 8 (+94)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">Boise State</span>
+                    <span class="mover-change mover-up">134 → 47 (+87)</span>
+                </div>
+            </div>
+            
+            <div class="mover-card">
+                <h2>📉 Biggest Fallers</h2>
+                <p style="margin-bottom: 1rem; color: #718096; font-size: 0.9rem;">Teams that dropped the most from Week 1 to Week 16</p>
+                <div class="mover-item">
+                    <span class="mover-team">Purdue</span>
+                    <span class="mover-change mover-down">24 → 126 (-102)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">Michigan State</span>
+                    <span class="mover-change mover-down">3 → 103 (-100)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">Kansas</span>
+                    <span class="mover-change mover-down">1 → 87 (-86)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">Maryland</span>
+                    <span class="mover-change mover-down">23 → 109 (-86)</span>
+                </div>
+                <div class="mover-item">
+                    <span class="mover-team">UCF</span>
+                    <span class="mover-change mover-down">6 → 91 (-85)</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">TJC <span>Rankings</span></div>
+            <div class="footer-links">
+                <a href="about.html">About the Model</a>
+            <a href="trends-2025.html">Trends</a>
+                <a href="#">Data Sources</a>
+                <a href="https://github.com/IdeaformAppDev/tjc-rankings" target="_blank">GitHub ↗</a>
+                <a href="about.html">Methodology</a>
+            </div>
+            <div class="footer-disclaimer">
+                Rankings generated algorithmically. No human bias, no conference favoritism — just math.
+                Data corrections welcome via GitHub issues.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
