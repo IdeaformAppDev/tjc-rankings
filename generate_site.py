@@ -554,12 +554,12 @@ def generate_team_page(team, season, results):
             team_rank = i
             break
     
-    # Get games
+    # Get games with season_type
     cursor.execute('''
-        SELECT g.home_team, g.away_team, g.home_points, g.away_points, g.week
+        SELECT g.home_team, g.away_team, g.home_points, g.away_points, g.week, g.season_type, g.start_date
         FROM games g
         WHERE (g.home_team = ? OR g.away_team = ?) AND g.season = ? AND g.completed = 1
-        ORDER BY g.week
+        ORDER BY g.start_date
     ''', (team.team_name, team.team_name, season))
     
     games = cursor.fetchall()
@@ -626,10 +626,11 @@ def generate_team_page(team, season, results):
     
     # Games table
     html += '<h2 style="font-family: \'Playfair Display\', serif; margin-bottom: 1rem; color: var(--primary);">Game Log</h2>\n'
-    html += '<table class="games-table">\n<thead>\n<tr><th>Week</th><th>Opponent</th><th>Result</th><th>Score</th></tr>\n</thead>\n<tbody>\n'
+    html += '<table class="games-table">\n<thead>\n<tr><th>Week</th><th>Type</th><th>Opponent</th><th>Result</th><th>Score</th></tr>\n</thead>\n<tbody>\n'
     
     for game in games:
         week = game[4]
+        season_type = game[5]
         is_home = game[0] == team.team_name
         opponent = game[1] if is_home else game[0]
         team_score = game[2] if is_home else game[3]
@@ -638,7 +639,13 @@ def generate_team_page(team, season, results):
         result_class = "win" if won else "loss"
         result_text = "W" if won else "L"
         
-        html += f'<tr><td>{week}</td><td>{"vs" if is_home else "@"} {opponent}</td><td class="{result_class}">{result_text}</td><td>{team_score}-{opp_score}</td></tr>\n'
+        # Format week label
+        if season_type == 'postseason':
+            week_label = 'Postseason'
+        else:
+            week_label = f"Week {week}"
+        
+        html += f'<tr><td>{week_label}</td><td>{season_type.title()}</td><td>{"vs" if is_home else "@"} {opponent}</td><td class="{result_class}">{result_text}</td><td>{team_score}-{opp_score}</td></tr>\n'
     
     html += '</tbody>\n</table>\n'
     html += footer_html
