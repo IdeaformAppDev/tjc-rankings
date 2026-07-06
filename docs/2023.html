@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 16 Rankings — 2023 Season</title>
+    <title>Final Rankings — 2023 Season</title>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
@@ -140,6 +140,11 @@
         .team-name {
             font-weight: 600;
             color: var(--primary);
+            text-decoration: none;
+        }
+        a.team-name:hover {
+            color: var(--accent);
+            text-decoration: underline;
         }
         .conference {
             font-size: 0.875rem;
@@ -255,6 +260,103 @@
             cursor: pointer;
             min-width: 200px;
         }
+        /* Team Detail Page */
+        .team-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .team-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .team-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .team-header .team-meta {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+        .games-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .games-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        .games-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .win { color: #38a169; font-weight: 600; }
+        .loss { color: var(--accent); font-weight: 600; }
+        /* Social Sharing */
+        .share-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .share-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .share-btn:hover { opacity: 0.85; }
+        .share-x { background: #000; color: white; }
+        .share-fb { background: #1877f2; color: white; }
+        .share-copy { background: #e2e8f0; color: var(--text); }
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -268,6 +370,7 @@
                 gap: 1rem;
             }
             .season-dropdown { margin-left: 0; }
+            .team-stats { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -305,31 +408,31 @@
 <tr><th>Rank</th><th>Team</th><th>Conference</th><th>Record</th><th style="text-align: right;">Score</th></tr>
 </thead>
 <tbody>
-<tr><td class="rank">1</td><td><div class="team-name">Michigan</div></td><td class="conference">Big Ten</td><td class="record">15-0</td><td class="score">68.6</td></tr>
-<tr><td class="rank">2</td><td><div class="team-name">Georgia</div></td><td class="conference">SEC</td><td class="record">12-1</td><td class="score">64.0</td></tr>
-<tr><td class="rank">3</td><td><div class="team-name">Washington</div></td><td class="conference">Pac-12</td><td class="record">14-1</td><td class="score">63.2</td></tr>
-<tr><td class="rank">4</td><td><div class="team-name">Alabama</div></td><td class="conference">SEC</td><td class="record">11-2</td><td class="score">61.6</td></tr>
-<tr><td class="rank">5</td><td><div class="team-name">Ohio State</div></td><td class="conference">Big Ten</td><td class="record">10-2</td><td class="score">60.9</td></tr>
-<tr><td class="rank">6</td><td><div class="team-name">Texas</div></td><td class="conference">Big 12</td><td class="record">12-2</td><td class="score">60.9</td></tr>
-<tr><td class="rank">7</td><td><div class="team-name">Oregon</div></td><td class="conference">Pac-12</td><td class="record">11-2</td><td class="score">60.8</td></tr>
-<tr><td class="rank">8</td><td><div class="team-name">Florida State</div></td><td class="conference">ACC</td><td class="record">12-1</td><td class="score">59.6</td></tr>
-<tr><td class="rank">9</td><td><div class="team-name">Missouri</div></td><td class="conference">SEC</td><td class="record">10-2</td><td class="score">58.0</td></tr>
-<tr><td class="rank">10</td><td><div class="team-name">Penn State</div></td><td class="conference">Big Ten</td><td class="record">9-3</td><td class="score">57.0</td></tr>
-<tr><td class="rank">11</td><td><div class="team-name">James Madison</div></td><td class="conference">Sun Belt</td><td class="record">10-2</td><td class="score">56.4</td></tr>
-<tr><td class="rank">12</td><td><div class="team-name">Liberty</div></td><td class="conference">Conference USA</td><td class="record">13-1</td><td class="score">56.0</td></tr>
-<tr><td class="rank">13</td><td><div class="team-name">Ole Miss</div></td><td class="conference">SEC</td><td class="record">10-2</td><td class="score">55.6</td></tr>
-<tr><td class="rank">14</td><td><div class="team-name">Oklahoma</div></td><td class="conference">Big 12</td><td class="record">10-3</td><td class="score">55.0</td></tr>
-<tr><td class="rank">15</td><td><div class="team-name">Notre Dame</div></td><td class="conference">FBS Independents</td><td class="record">9-3</td><td class="score">54.6</td></tr>
-<tr><td class="rank">16</td><td><div class="team-name">LSU</div></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">52.7</td></tr>
-<tr><td class="rank">17</td><td><div class="team-name">Troy</div></td><td class="conference">Sun Belt</td><td class="record">10-3</td><td class="score">52.5</td></tr>
-<tr><td class="rank">18</td><td><div class="team-name">Arizona</div></td><td class="conference">Pac-12</td><td class="record">9-3</td><td class="score">52.0</td></tr>
-<tr><td class="rank">19</td><td><div class="team-name">Tulane</div></td><td class="conference">American Athletic</td><td class="record">10-3</td><td class="score">51.5</td></tr>
-<tr><td class="rank">20</td><td><div class="team-name">Toledo</div></td><td class="conference">Mid-American</td><td class="record">10-3</td><td class="score">50.7</td></tr>
-<tr><td class="rank">21</td><td><div class="team-name">SMU</div></td><td class="conference">American Athletic</td><td class="record">10-3</td><td class="score">50.6</td></tr>
-<tr><td class="rank">22</td><td><div class="team-name">Memphis</div></td><td class="conference">American Athletic</td><td class="record">9-3</td><td class="score">50.6</td></tr>
-<tr><td class="rank">23</td><td><div class="team-name">Kansas State</div></td><td class="conference">Big 12</td><td class="record">8-4</td><td class="score">50.5</td></tr>
-<tr><td class="rank">24</td><td><div class="team-name">Miami (OH)</div></td><td class="conference">Mid-American</td><td class="record">10-3</td><td class="score">49.4</td></tr>
-<tr><td class="rank">25</td><td><div class="team-name">Louisville</div></td><td class="conference">ACC</td><td class="record">9-4</td><td class="score">48.8</td></tr>
+<tr><td class="rank">1</td><td><a href="team-2023-michigan.html" class="team-name">Michigan</a></td><td class="conference">Big Ten</td><td class="record">15-0</td><td class="score">68.6</td></tr>
+<tr><td class="rank">2</td><td><a href="team-2023-georgia.html" class="team-name">Georgia</a></td><td class="conference">SEC</td><td class="record">12-1</td><td class="score">64.0</td></tr>
+<tr><td class="rank">3</td><td><a href="team-2023-washington.html" class="team-name">Washington</a></td><td class="conference">Pac-12</td><td class="record">14-1</td><td class="score">63.2</td></tr>
+<tr><td class="rank">4</td><td><a href="team-2023-alabama.html" class="team-name">Alabama</a></td><td class="conference">SEC</td><td class="record">11-2</td><td class="score">61.6</td></tr>
+<tr><td class="rank">5</td><td><a href="team-2023-ohio-state.html" class="team-name">Ohio State</a></td><td class="conference">Big Ten</td><td class="record">10-2</td><td class="score">60.9</td></tr>
+<tr><td class="rank">6</td><td><a href="team-2023-texas.html" class="team-name">Texas</a></td><td class="conference">Big 12</td><td class="record">12-2</td><td class="score">60.9</td></tr>
+<tr><td class="rank">7</td><td><a href="team-2023-oregon.html" class="team-name">Oregon</a></td><td class="conference">Pac-12</td><td class="record">11-2</td><td class="score">60.8</td></tr>
+<tr><td class="rank">8</td><td><a href="team-2023-florida-state.html" class="team-name">Florida State</a></td><td class="conference">ACC</td><td class="record">12-1</td><td class="score">59.6</td></tr>
+<tr><td class="rank">9</td><td><a href="team-2023-missouri.html" class="team-name">Missouri</a></td><td class="conference">SEC</td><td class="record">10-2</td><td class="score">58.0</td></tr>
+<tr><td class="rank">10</td><td><a href="team-2023-penn-state.html" class="team-name">Penn State</a></td><td class="conference">Big Ten</td><td class="record">9-3</td><td class="score">57.0</td></tr>
+<tr><td class="rank">11</td><td><a href="team-2023-james-madison.html" class="team-name">James Madison</a></td><td class="conference">Sun Belt</td><td class="record">10-2</td><td class="score">56.4</td></tr>
+<tr><td class="rank">12</td><td><a href="team-2023-liberty.html" class="team-name">Liberty</a></td><td class="conference">Conference USA</td><td class="record">13-1</td><td class="score">56.0</td></tr>
+<tr><td class="rank">13</td><td><a href="team-2023-ole-miss.html" class="team-name">Ole Miss</a></td><td class="conference">SEC</td><td class="record">10-2</td><td class="score">55.6</td></tr>
+<tr><td class="rank">14</td><td><a href="team-2023-oklahoma.html" class="team-name">Oklahoma</a></td><td class="conference">Big 12</td><td class="record">10-3</td><td class="score">55.0</td></tr>
+<tr><td class="rank">15</td><td><a href="team-2023-notre-dame.html" class="team-name">Notre Dame</a></td><td class="conference">FBS Independents</td><td class="record">9-3</td><td class="score">54.6</td></tr>
+<tr><td class="rank">16</td><td><a href="team-2023-lsu.html" class="team-name">LSU</a></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">52.7</td></tr>
+<tr><td class="rank">17</td><td><a href="team-2023-troy.html" class="team-name">Troy</a></td><td class="conference">Sun Belt</td><td class="record">10-3</td><td class="score">52.5</td></tr>
+<tr><td class="rank">18</td><td><a href="team-2023-arizona.html" class="team-name">Arizona</a></td><td class="conference">Pac-12</td><td class="record">9-3</td><td class="score">52.0</td></tr>
+<tr><td class="rank">19</td><td><a href="team-2023-tulane.html" class="team-name">Tulane</a></td><td class="conference">American Athletic</td><td class="record">10-3</td><td class="score">51.5</td></tr>
+<tr><td class="rank">20</td><td><a href="team-2023-toledo.html" class="team-name">Toledo</a></td><td class="conference">Mid-American</td><td class="record">10-3</td><td class="score">50.7</td></tr>
+<tr><td class="rank">21</td><td><a href="team-2023-smu.html" class="team-name">SMU</a></td><td class="conference">American Athletic</td><td class="record">10-3</td><td class="score">50.6</td></tr>
+<tr><td class="rank">22</td><td><a href="team-2023-memphis.html" class="team-name">Memphis</a></td><td class="conference">American Athletic</td><td class="record">9-3</td><td class="score">50.6</td></tr>
+<tr><td class="rank">23</td><td><a href="team-2023-kansas-state.html" class="team-name">Kansas State</a></td><td class="conference">Big 12</td><td class="record">8-4</td><td class="score">50.5</td></tr>
+<tr><td class="rank">24</td><td><a href="team-2023-miami-%28oh%29.html" class="team-name">Miami (OH)</a></td><td class="conference">Mid-American</td><td class="record">10-3</td><td class="score">49.4</td></tr>
+<tr><td class="rank">25</td><td><a href="team-2023-louisville.html" class="team-name">Louisville</a></td><td class="conference">ACC</td><td class="record">9-4</td><td class="score">48.8</td></tr>
 </tbody>
 </table>
 

@@ -4,6 +4,8 @@ import sys
 sys.path.insert(0, 'src')
 from ranking_engine import RankingEngine
 from collections import defaultdict
+import sqlite3
+import urllib.parse
 
 # Generate rankings for all seasons
 seasons = [2021, 2022, 2023, 2024, 2025]
@@ -158,6 +160,11 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
         .team-name {{
             font-weight: 600;
             color: var(--primary);
+            text-decoration: none;
+        }}
+        a.team-name:hover {{
+            color: var(--accent);
+            text-decoration: underline;
         }}
         .conference {{
             font-size: 0.875rem;
@@ -273,6 +280,103 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
             cursor: pointer;
             min-width: 200px;
         }}
+        /* Team Detail Page */
+        .team-header {{
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }}
+        .team-header-content {{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }}
+        .team-header h1 {{
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }}
+        .team-header .team-meta {{
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }}
+        .team-stats {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }}
+        .stat-card {{
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }}
+        .stat-value {{
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }}
+        .stat-label {{
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }}
+        .games-table {{
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }}
+        .games-table th {{
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }}
+        .games-table td {{
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }}
+        .win {{ color: #38a169; font-weight: 600; }}
+        .loss {{ color: var(--accent); font-weight: 600; }}
+        /* Social Sharing */
+        .share-section {{
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }}
+        .share-title {{
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }}
+        .share-buttons {{
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }}
+        .share-btn {{
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }}
+        .share-btn:hover {{ opacity: 0.85; }}
+        .share-x {{ background: #000; color: white; }}
+        .share-fb {{ background: #1877f2; color: white; }}
+        .share-copy {{ background: #e2e8f0; color: var(--text); }}
         @media (max-width: 768px) {{
             .header-content {{
                 flex-direction: column;
@@ -286,6 +390,7 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
                 gap: 1rem;
             }}
             .season-dropdown {{ margin-left: 0; }}
+            .team-stats {{ grid-template-columns: repeat(2, 1fr); }}
         }}
     </style>
 </head>
@@ -340,13 +445,18 @@ footer_html = """
 </html>
 """
 
+def slugify(name):
+    """Convert team name to URL-safe slug."""
+    return urllib.parse.quote(name.lower().replace(' ', '-'))
+
 def generate_rankings_table(results, season, week):
     html = f'<h1 style="font-family: \'Playfair Display\', serif; margin-bottom: 1.5rem; color: var(--primary);">Final Rankings — {season} Season</h1>\n'
     html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conference</th><th>Record</th><th style="text-align: right;">Score</th></tr>\n</thead>\n<tbody>\n'
     
     for rank, team in enumerate(results[:25], 1):
         record = f"{team.wins}-{team.losses}"
-        html += f'<tr><td class="rank">{rank}</td><td><div class="team-name">{team.team_name}</div></td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td></tr>\n'
+        team_slug = slugify(team.team_name)
+        html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a></td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td></tr>\n'
     
     html += '</tbody>\n</table>\n'
     return html
@@ -376,8 +486,95 @@ def generate_conference_standings(results, season):
         html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>\n</thead>\n<tbody>\n'
         for rank, team in enumerate(teams[:10], 1):
             record = f"{team.wins}-{team.losses}"
-            html += f'<tr><td class="rank">{rank}</td><td><div class="team-name">{team.team_name}</div></td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td></tr>\n'
+            team_slug = slugify(team.team_name)
+            html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a></td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td></tr>\n'
         html += '</tbody>\n</table>\n</div>\n'
+    
+    return html
+
+def generate_team_page(team, season, results):
+    """Generate a team detail page with stats and games."""
+    conn = sqlite3.connect('data/cfb_ranking.db')
+    cursor = conn.cursor()
+    
+    # Get team rank
+    team_rank = None
+    for i, t in enumerate(results, 1):
+        if t.team_name == team.team_name:
+            team_rank = i
+            break
+    
+    # Get games
+    cursor.execute('''
+        SELECT g.home_team, g.away_team, g.home_points, g.away_points, g.week
+        FROM games g
+        WHERE (g.home_team = ? OR g.away_team = ?) AND g.season = ? AND g.completed = 1
+        ORDER BY g.week
+    ''', (team.team_name, team.team_name, season))
+    
+    games = cursor.fetchall()
+    conn.close()
+    
+    # Calculate stats
+    total_games = len(games)
+    wins = sum(1 for g in games if (g[0] == team.team_name and g[2] > g[3]) or (g[1] == team.team_name and g[3] > g[2]))
+    losses = total_games - wins
+    points_for = sum(g[2] if g[0] == team.team_name else g[3] for g in games)
+    points_against = sum(g[3] if g[0] == team.team_name else g[2] for g in games)
+    
+    team_slug = slugify(team.team_name)
+    page_url = f"https://tjcrankings.com/team-{season}-{team_slug}.html"
+    share_text = f"TJC Rankings has {team.team_name} ranked #{team_rank} in {season} with a {wins}-{losses} record!"
+    
+    html = get_header(f"{team.team_name} — {season} Season — TJC Rankings")
+    
+    # Team header
+    html += f'''
+    <div class="team-header">
+        <div class="team-header-content">
+            <h1>{team.team_name}</h1>
+            <div class="team-meta">{season} Season • {team.conference} • Rank #{team_rank}</div>
+        </div>
+    </div>
+    '''
+    
+    # Stats cards
+    html += '<div class="team-stats">\n'
+    html += f'<div class="stat-card"><div class="stat-value">{wins}-{losses}</div><div class="stat-label">Record</div></div>\n'
+    html += f'<div class="stat-card"><div class="stat-value">{team.composite_score:.1f}</div><div class="stat-label">Composite Score</div></div>\n'
+    html += f'<div class="stat-card"><div class="stat-value">{points_for}</div><div class="stat-label">Points For</div></div>\n'
+    html += f'<div class="stat-card"><div class="stat-value">{points_against}</div><div class="stat-label">Points Against</div></div>\n'
+    html += f'<div class="stat-card"><div class="stat-value">{points_for - points_against:+d}</div><div class="stat-label">Point Diff</div></div>\n'
+    html += f'<div class="stat-card"><div class="stat-value">{total_games}</div><div class="stat-label">Games Played</div></div>\n'
+    html += '</div>\n'
+    
+    # Social sharing
+    html += '<div class="share-section">\n'
+    html += '<div class="share-title">Share these rankings</div>\n'
+    html += '<div class="share-buttons">\n'
+    html += f'<a href="https://twitter.com/intent/tweet?text={urllib.parse.quote(share_text)}&url={urllib.parse.quote(page_url)}" target="_blank" class="share-btn share-x">𝕏 Share on X</a>\n'
+    html += f'<a href="https://www.facebook.com/sharer/sharer.php?u={urllib.parse.quote(page_url)}" target="_blank" class="share-btn share-fb">f Share on Facebook</a>\n'
+    html += f'<button class="share-btn share-copy" onclick="navigator.clipboard.writeText(\'{page_url}\');this.textContent=\'Copied!\';setTimeout(()=>this.textContent=\'Copy Link\',2000)">Copy Link</button>\n'
+    html += '</div>\n</div>\n'
+    
+    # Games table
+    html += '<h2 style="font-family: \'Playfair Display\', serif; margin-bottom: 1rem; color: var(--primary);">Game Log</h2>\n'
+    html += '<table class="games-table">\n<thead>\n<tr><th>Week</th><th>Opponent</th><th>Result</th><th>Score</th></tr>\n</thead>\n<tbody>\n'
+    
+    for game in games:
+        week = game[4]
+        is_home = game[0] == team.team_name
+        opponent = game[1] if is_home else game[0]
+        team_score = game[2] if is_home else game[3]
+        opp_score = game[3] if is_home else game[2]
+        won = team_score > opp_score
+        result_class = "win" if won else "loss"
+        result_text = "W" if won else "L"
+        
+        html += f'<tr><td>{week}</td><td>{"vs" if is_home else "@"} {opponent}</td><td class="{result_class}">{result_text}</td><td>{team_score}-{opp_score}</td></tr>\n'
+    
+    html += '</tbody>\n</table>\n'
+    html += footer_html
     
     return html
 
@@ -388,7 +585,7 @@ for season in seasons:
     rankings_active = ' class="active"' if season == 2025 else ''
     
     # Season page
-    page_html = get_header(f"Week 16 Rankings — {season} Season", rankings_active=rankings_active)
+    page_html = get_header(f"Final Rankings — {season} Season", rankings_active=rankings_active)
     page_html += generate_rankings_table(results, season, 16)
     page_html += footer_html
     
@@ -396,6 +593,15 @@ for season in seasons:
     with open(filename, 'w') as f:
         f.write(page_html)
     print(f"Generated {filename}")
+    
+    # Generate team pages for top 25
+    for team in results[:25]:
+        team_html = generate_team_page(team, season, results)
+        team_slug = slugify(team.team_name)
+        team_filename = f'docs/team-{season}-{team_slug}.html'
+        with open(team_filename, 'w') as f:
+            f.write(team_html)
+        print(f"Generated {team_filename}")
 
 # Generate index.html (2025)
 results = all_rankings[2025]

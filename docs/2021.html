@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Week 16 Rankings — 2021 Season</title>
+    <title>Final Rankings — 2021 Season</title>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
@@ -140,6 +140,11 @@
         .team-name {
             font-weight: 600;
             color: var(--primary);
+            text-decoration: none;
+        }
+        a.team-name:hover {
+            color: var(--accent);
+            text-decoration: underline;
         }
         .conference {
             font-size: 0.875rem;
@@ -255,6 +260,103 @@
             cursor: pointer;
             min-width: 200px;
         }
+        /* Team Detail Page */
+        .team-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .team-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .team-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .team-header .team-meta {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+        .games-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .games-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        .games-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .win { color: #38a169; font-weight: 600; }
+        .loss { color: var(--accent); font-weight: 600; }
+        /* Social Sharing */
+        .share-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .share-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .share-btn:hover { opacity: 0.85; }
+        .share-x { background: #000; color: white; }
+        .share-fb { background: #1877f2; color: white; }
+        .share-copy { background: #e2e8f0; color: var(--text); }
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -268,6 +370,7 @@
                 gap: 1rem;
             }
             .season-dropdown { margin-left: 0; }
+            .team-stats { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -305,31 +408,31 @@
 <tr><th>Rank</th><th>Team</th><th>Conference</th><th>Record</th><th style="text-align: right;">Score</th></tr>
 </thead>
 <tbody>
-<tr><td class="rank">1</td><td><div class="team-name">Georgia</div></td><td class="conference">SEC</td><td class="record">13-1</td><td class="score">67.9</td></tr>
-<tr><td class="rank">2</td><td><div class="team-name">Cincinnati</div></td><td class="conference">American Athletic</td><td class="record">12-1</td><td class="score">61.9</td></tr>
-<tr><td class="rank">3</td><td><div class="team-name">Alabama</div></td><td class="conference">SEC</td><td class="record">12-2</td><td class="score">61.8</td></tr>
-<tr><td class="rank">4</td><td><div class="team-name">Oklahoma State</div></td><td class="conference">Big 12</td><td class="record">11-2</td><td class="score">58.8</td></tr>
-<tr><td class="rank">5</td><td><div class="team-name">Michigan</div></td><td class="conference">Big Ten</td><td class="record">12-2</td><td class="score">58.8</td></tr>
-<tr><td class="rank">6</td><td><div class="team-name">Notre Dame</div></td><td class="conference">FBS Independents</td><td class="record">11-2</td><td class="score">58.6</td></tr>
-<tr><td class="rank">7</td><td><div class="team-name">Louisiana</div></td><td class="conference">Sun Belt</td><td class="record">12-1</td><td class="score">58.1</td></tr>
-<tr><td class="rank">8</td><td><div class="team-name">Ohio State</div></td><td class="conference">Big Ten</td><td class="record">11-2</td><td class="score">57.8</td></tr>
-<tr><td class="rank">9</td><td><div class="team-name">Baylor</div></td><td class="conference">Big 12</td><td class="record">11-2</td><td class="score">57.7</td></tr>
-<tr><td class="rank">10</td><td><div class="team-name">Clemson</div></td><td class="conference">ACC</td><td class="record">9-3</td><td class="score">54.7</td></tr>
-<tr><td class="rank">11</td><td><div class="team-name">San Diego State</div></td><td class="conference">Mountain West</td><td class="record">11-2</td><td class="score">54.5</td></tr>
-<tr><td class="rank">12</td><td><div class="team-name">Houston</div></td><td class="conference">American Athletic</td><td class="record">11-2</td><td class="score">53.9</td></tr>
-<tr><td class="rank">13</td><td><div class="team-name">Oklahoma</div></td><td class="conference">Big 12</td><td class="record">10-2</td><td class="score">53.9</td></tr>
-<tr><td class="rank">14</td><td><div class="team-name">Michigan State</div></td><td class="conference">Big Ten</td><td class="record">10-2</td><td class="score">53.1</td></tr>
-<tr><td class="rank">15</td><td><div class="team-name">Pittsburgh</div></td><td class="conference">ACC</td><td class="record">10-3</td><td class="score">52.6</td></tr>
-<tr><td class="rank">16</td><td><div class="team-name">Coastal Carolina</div></td><td class="conference">Sun Belt</td><td class="record">10-2</td><td class="score">52.5</td></tr>
-<tr><td class="rank">17</td><td><div class="team-name">Air Force</div></td><td class="conference">Mountain West</td><td class="record">9-3</td><td class="score">52.3</td></tr>
-<tr><td class="rank">18</td><td><div class="team-name">UTSA</div></td><td class="conference">Conference USA</td><td class="record">11-2</td><td class="score">51.9</td></tr>
-<tr><td class="rank">19</td><td><div class="team-name">Kentucky</div></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">51.8</td></tr>
-<tr><td class="rank">20</td><td><div class="team-name">Ole Miss</div></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">51.3</td></tr>
-<tr><td class="rank">21</td><td><div class="team-name">Wake Forest</div></td><td class="conference">ACC</td><td class="record">10-3</td><td class="score">50.2</td></tr>
-<tr><td class="rank">22</td><td><div class="team-name">BYU</div></td><td class="conference">FBS Independents</td><td class="record">9-3</td><td class="score">50.2</td></tr>
-<tr><td class="rank">23</td><td><div class="team-name">NC State</div></td><td class="conference">ACC</td><td class="record">8-3</td><td class="score">50.2</td></tr>
-<tr><td class="rank">24</td><td><div class="team-name">Wisconsin</div></td><td class="conference">Big Ten</td><td class="record">9-4</td><td class="score">50.1</td></tr>
-<tr><td class="rank">25</td><td><div class="team-name">Utah</div></td><td class="conference">Pac-12</td><td class="record">9-4</td><td class="score">49.8</td></tr>
+<tr><td class="rank">1</td><td><a href="team-2021-georgia.html" class="team-name">Georgia</a></td><td class="conference">SEC</td><td class="record">13-1</td><td class="score">67.9</td></tr>
+<tr><td class="rank">2</td><td><a href="team-2021-cincinnati.html" class="team-name">Cincinnati</a></td><td class="conference">American Athletic</td><td class="record">12-1</td><td class="score">61.9</td></tr>
+<tr><td class="rank">3</td><td><a href="team-2021-alabama.html" class="team-name">Alabama</a></td><td class="conference">SEC</td><td class="record">12-2</td><td class="score">61.8</td></tr>
+<tr><td class="rank">4</td><td><a href="team-2021-oklahoma-state.html" class="team-name">Oklahoma State</a></td><td class="conference">Big 12</td><td class="record">11-2</td><td class="score">58.8</td></tr>
+<tr><td class="rank">5</td><td><a href="team-2021-michigan.html" class="team-name">Michigan</a></td><td class="conference">Big Ten</td><td class="record">12-2</td><td class="score">58.8</td></tr>
+<tr><td class="rank">6</td><td><a href="team-2021-notre-dame.html" class="team-name">Notre Dame</a></td><td class="conference">FBS Independents</td><td class="record">11-2</td><td class="score">58.6</td></tr>
+<tr><td class="rank">7</td><td><a href="team-2021-louisiana.html" class="team-name">Louisiana</a></td><td class="conference">Sun Belt</td><td class="record">12-1</td><td class="score">58.1</td></tr>
+<tr><td class="rank">8</td><td><a href="team-2021-ohio-state.html" class="team-name">Ohio State</a></td><td class="conference">Big Ten</td><td class="record">11-2</td><td class="score">57.8</td></tr>
+<tr><td class="rank">9</td><td><a href="team-2021-baylor.html" class="team-name">Baylor</a></td><td class="conference">Big 12</td><td class="record">11-2</td><td class="score">57.7</td></tr>
+<tr><td class="rank">10</td><td><a href="team-2021-clemson.html" class="team-name">Clemson</a></td><td class="conference">ACC</td><td class="record">9-3</td><td class="score">54.7</td></tr>
+<tr><td class="rank">11</td><td><a href="team-2021-san-diego-state.html" class="team-name">San Diego State</a></td><td class="conference">Mountain West</td><td class="record">11-2</td><td class="score">54.5</td></tr>
+<tr><td class="rank">12</td><td><a href="team-2021-houston.html" class="team-name">Houston</a></td><td class="conference">American Athletic</td><td class="record">11-2</td><td class="score">53.9</td></tr>
+<tr><td class="rank">13</td><td><a href="team-2021-oklahoma.html" class="team-name">Oklahoma</a></td><td class="conference">Big 12</td><td class="record">10-2</td><td class="score">53.9</td></tr>
+<tr><td class="rank">14</td><td><a href="team-2021-michigan-state.html" class="team-name">Michigan State</a></td><td class="conference">Big Ten</td><td class="record">10-2</td><td class="score">53.1</td></tr>
+<tr><td class="rank">15</td><td><a href="team-2021-pittsburgh.html" class="team-name">Pittsburgh</a></td><td class="conference">ACC</td><td class="record">10-3</td><td class="score">52.6</td></tr>
+<tr><td class="rank">16</td><td><a href="team-2021-coastal-carolina.html" class="team-name">Coastal Carolina</a></td><td class="conference">Sun Belt</td><td class="record">10-2</td><td class="score">52.5</td></tr>
+<tr><td class="rank">17</td><td><a href="team-2021-air-force.html" class="team-name">Air Force</a></td><td class="conference">Mountain West</td><td class="record">9-3</td><td class="score">52.3</td></tr>
+<tr><td class="rank">18</td><td><a href="team-2021-utsa.html" class="team-name">UTSA</a></td><td class="conference">Conference USA</td><td class="record">11-2</td><td class="score">51.9</td></tr>
+<tr><td class="rank">19</td><td><a href="team-2021-kentucky.html" class="team-name">Kentucky</a></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">51.8</td></tr>
+<tr><td class="rank">20</td><td><a href="team-2021-ole-miss.html" class="team-name">Ole Miss</a></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">51.3</td></tr>
+<tr><td class="rank">21</td><td><a href="team-2021-wake-forest.html" class="team-name">Wake Forest</a></td><td class="conference">ACC</td><td class="record">10-3</td><td class="score">50.2</td></tr>
+<tr><td class="rank">22</td><td><a href="team-2021-byu.html" class="team-name">BYU</a></td><td class="conference">FBS Independents</td><td class="record">9-3</td><td class="score">50.2</td></tr>
+<tr><td class="rank">23</td><td><a href="team-2021-nc-state.html" class="team-name">NC State</a></td><td class="conference">ACC</td><td class="record">8-3</td><td class="score">50.2</td></tr>
+<tr><td class="rank">24</td><td><a href="team-2021-wisconsin.html" class="team-name">Wisconsin</a></td><td class="conference">Big Ten</td><td class="record">9-4</td><td class="score">50.1</td></tr>
+<tr><td class="rank">25</td><td><a href="team-2021-utah.html" class="team-name">Utah</a></td><td class="conference">Pac-12</td><td class="record">9-4</td><td class="score">49.8</td></tr>
 </tbody>
 </table>
 
