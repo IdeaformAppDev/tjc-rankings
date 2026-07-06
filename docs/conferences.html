@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Standings — TJC Rankings</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #c53030;
+            --gold: #d69e2e;
+            --bg: #f7fafc;
+            --text: #2d3748;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            background: white;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        .brand-text { flex: 1; }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .brand-name span { color: var(--gold); }
+        .brand-tagline {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+        .nav {
+            background: white;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            padding: 0.5rem 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .season-dropdown {
+            margin-left: auto;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .rankings-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .rankings-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        .rankings-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .rankings-table tr:hover { background: #f7fafc; }
+        .rank {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            width: 60px;
+        }
+        .team-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .conference {
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        .record {
+            font-weight: 600;
+            text-align: center;
+        }
+        .score {
+            font-weight: 700;
+            text-align: right;
+            color: var(--primary);
+        }
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer-brand span { color: var(--gold); }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-disclaimer {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .content-section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .metric-list {
+            list-style: none;
+            padding: 0;
+        }
+        .metric-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .metric-weight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .conference-standings {
+            margin-bottom: 2rem;
+        }
+        .conference-standings h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gold);
+        }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .logo { width: 80px; height: 80px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-content {
+                overflow-x: auto;
+                gap: 1rem;
+            }
+            .season-dropdown { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/tjc-rankings-logo.png" alt="TJC Rankings Logo">
+            </div>
+            <div class="brand-text">
+                <div class="brand-name">TJC <span>Rankings</span></div>
+                <div class="brand-tagline">Computer College Football Rankings</div>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html">Rankings</a>
+            <a href="conferences.html" class="active">Conferences</a>
+            <a href="about.html">About the Model</a>
+            <select class="season-dropdown" onchange="window.location.href=this.value">
+                <option value="">Past Seasons</option>
+                <option value="2025.html">2025</option>
+                <option value="2024.html">2024</option>
+                <option value="2023.html">2023</option>
+                <option value="2022.html">2022</option>
+                <option value="2021.html">2021</option>
+            </select>
+        </div>
+    </nav>
+    <main class="main">
+<h1 style="font-family: 'Playfair Display', serif; margin-bottom: 1.5rem; color: var(--primary);">Conference Standings — 2025 Season</h1>
+<div class="conference-standings">
+<h3>ACC</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Miami</div></td><td class="record">12-3</td><td class="score">59.9</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Virginia</div></td><td class="record">10-3</td><td class="score">52.9</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">SMU</div></td><td class="record">8-4</td><td class="score">46.8</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Louisville</div></td><td class="record">8-4</td><td class="score">46.7</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">Georgia Tech</div></td><td class="record">8-4</td><td class="score">46.4</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Wake Forest</div></td><td class="record">8-4</td><td class="score">45.6</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Duke</div></td><td class="record">8-5</td><td class="score">44.5</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">NC State</div></td><td class="record">7-5</td><td class="score">42.0</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Pittsburgh</div></td><td class="record">7-5</td><td class="score">40.9</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Clemson</div></td><td class="record">6-6</td><td class="score">38.8</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>American Athletic</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">North Texas</div></td><td class="record">11-2</td><td class="score">54.5</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Navy</div></td><td class="record">10-2</td><td class="score">52.2</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">Tulane</div></td><td class="record">11-3</td><td class="score">48.5</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">South Florida</div></td><td class="record">8-4</td><td class="score">46.9</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">East Carolina</div></td><td class="record">8-4</td><td class="score">46.0</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Army</div></td><td class="record">7-5</td><td class="score">41.9</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Memphis</div></td><td class="record">7-5</td><td class="score">41.1</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">UTSA</div></td><td class="record">6-6</td><td class="score">38.4</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Temple</div></td><td class="record">4-7</td><td class="score">32.1</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Rice</div></td><td class="record">4-8</td><td class="score">29.5</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Big 12</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Texas Tech</div></td><td class="record">11-2</td><td class="score">58.5</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">BYU</div></td><td class="record">11-2</td><td class="score">55.6</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">Utah</div></td><td class="record">10-2</td><td class="score">54.6</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Arizona</div></td><td class="record">8-4</td><td class="score">47.1</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">Houston</div></td><td class="record">9-3</td><td class="score">46.2</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">TCU</div></td><td class="record">8-4</td><td class="score">46.0</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Iowa State</div></td><td class="record">7-4</td><td class="score">45.7</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">Arizona State</div></td><td class="record">7-5</td><td class="score">43.7</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Cincinnati</div></td><td class="record">6-6</td><td class="score">37.8</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Kansas State</div></td><td class="record">5-6</td><td class="score">37.0</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Big Ten</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Indiana</div></td><td class="record">15-0</td><td class="score">69.9</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Ohio State</div></td><td class="record">11-2</td><td class="score">62.2</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">Oregon</div></td><td class="record">12-2</td><td class="score">60.8</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Iowa</div></td><td class="record">8-4</td><td class="score">52.7</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">USC</div></td><td class="record">9-4</td><td class="score">50.6</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Michigan</div></td><td class="record">9-4</td><td class="score">50.5</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Washington</div></td><td class="record">8-4</td><td class="score">49.0</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">Illinois</div></td><td class="record">8-4</td><td class="score">47.8</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Penn State</div></td><td class="record">6-6</td><td class="score">42.5</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Northwestern</div></td><td class="record">6-6</td><td class="score">40.7</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Conference USA</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Kennesaw State</div></td><td class="record">9-4</td><td class="score">45.3</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Western Kentucky</div></td><td class="record">8-4</td><td class="score">43.4</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">Jacksonville State</div></td><td class="record">8-5</td><td class="score">42.2</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Louisiana Tech</div></td><td class="record">7-5</td><td class="score">39.4</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">Missouri State</div></td><td class="record">6-6</td><td class="score">35.7</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Florida International</div></td><td class="record">6-6</td><td class="score">35.1</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Delaware</div></td><td class="record">6-6</td><td class="score">33.9</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">Liberty</div></td><td class="record">3-8</td><td class="score">30.1</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">New Mexico State</div></td><td class="record">3-8</td><td class="score">26.9</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Middle Tennessee</div></td><td class="record">3-8</td><td class="score">26.5</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>FBS Independents</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Notre Dame</div></td><td class="record">10-2</td><td class="score">57.4</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">UConn</div></td><td class="record">8-4</td><td class="score">40.0</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Independent</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Sacramento State</div></td><td class="record">0-0</td><td class="score">42.5</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">North Dakota State</div></td><td class="record">0-0</td><td class="score">42.5</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Mid-American</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Western Michigan</div></td><td class="record">9-4</td><td class="score">45.1</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Ohio</div></td><td class="record">8-4</td><td class="score">42.9</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">Toledo</div></td><td class="record">7-5</td><td class="score">42.8</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Miami (OH)</div></td><td class="record">6-7</td><td class="score">35.5</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">Central Michigan</div></td><td class="record">6-6</td><td class="score">34.2</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Buffalo</div></td><td class="record">4-7</td><td class="score">31.1</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Eastern Michigan</div></td><td class="record">4-7</td><td class="score">29.1</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">Bowling Green</div></td><td class="record">3-8</td><td class="score">27.3</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Akron</div></td><td class="record">4-7</td><td class="score">26.2</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Kent State</div></td><td class="record">4-7</td><td class="score">26.0</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Mountain West</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">San Diego State</div></td><td class="record">8-4</td><td class="score">44.3</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">UNLV</div></td><td class="record">9-4</td><td class="score">43.8</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">New Mexico</div></td><td class="record">8-4</td><td class="score">43.8</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Boise State</div></td><td class="record">8-5</td><td class="score">42.9</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">Fresno State</div></td><td class="record">8-4</td><td class="score">40.8</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Hawai'i</div></td><td class="record">8-4</td><td class="score">40.5</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Utah State</div></td><td class="record">5-7</td><td class="score">34.4</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">Air Force</div></td><td class="record">3-8</td><td class="score">29.3</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Wyoming</div></td><td class="record">3-8</td><td class="score">28.8</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Nevada</div></td><td class="record">2-9</td><td class="score">25.6</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Pac-12</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Washington State</div></td><td class="record">6-6</td><td class="score">40.1</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Oregon State</div></td><td class="record">1-10</td><td class="score">22.7</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>SEC</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">Georgia</div></td><td class="record">11-2</td><td class="score">58.6</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Ole Miss</div></td><td class="record">12-2</td><td class="score">57.4</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">Texas A&M</div></td><td class="record">10-2</td><td class="score">55.2</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Oklahoma</div></td><td class="record">9-3</td><td class="score">54.9</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">Alabama</div></td><td class="record">10-4</td><td class="score">50.7</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Vanderbilt</div></td><td class="record">9-3</td><td class="score">50.5</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Texas</div></td><td class="record">10-3</td><td class="score">50.0</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">Missouri</div></td><td class="record">7-5</td><td class="score">43.3</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Tennessee</div></td><td class="record">7-5</td><td class="score">41.6</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">LSU</div></td><td class="record">6-6</td><td class="score">40.8</td></tr>
+</tbody>
+</table>
+</div>
+<div class="conference-standings">
+<h3>Sun Belt</h3>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><div class="team-name">James Madison</div></td><td class="record">11-2</td><td class="score">57.8</td></tr>
+<tr><td class="rank">2</td><td><div class="team-name">Old Dominion</div></td><td class="record">9-3</td><td class="score">47.3</td></tr>
+<tr><td class="rank">3</td><td><div class="team-name">Troy</div></td><td class="record">7-6</td><td class="score">38.1</td></tr>
+<tr><td class="rank">4</td><td><div class="team-name">Texas State</div></td><td class="record">6-6</td><td class="score">36.2</td></tr>
+<tr><td class="rank">5</td><td><div class="team-name">Southern Miss</div></td><td class="record">6-6</td><td class="score">36.0</td></tr>
+<tr><td class="rank">6</td><td><div class="team-name">Georgia Southern</div></td><td class="record">6-6</td><td class="score">35.1</td></tr>
+<tr><td class="rank">7</td><td><div class="team-name">Arkansas State</div></td><td class="record">6-6</td><td class="score">35.0</td></tr>
+<tr><td class="rank">8</td><td><div class="team-name">Louisiana</div></td><td class="record">5-7</td><td class="score">32.2</td></tr>
+<tr><td class="rank">9</td><td><div class="team-name">Marshall</div></td><td class="record">4-7</td><td class="score">31.8</td></tr>
+<tr><td class="rank">10</td><td><div class="team-name">Coastal Carolina</div></td><td class="record">5-7</td><td class="score">30.0</td></tr>
+</tbody>
+</table>
+</div>
+
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">TJC <span>Rankings</span></div>
+            <div class="footer-links">
+                <a href="about.html">About the Model</a>
+                <a href="#">Data Sources</a>
+                <a href="https://github.com/IdeaformAppDev/tjc-rankings" target="_blank">GitHub ↗</a>
+                <a href="about.html">Methodology</a>
+            </div>
+            <div class="footer-disclaimer">
+                Rankings generated algorithmically. No human bias, no conference favoritism — just math.
+                Data corrections welcome via GitHub issues.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
