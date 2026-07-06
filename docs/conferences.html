@@ -234,6 +234,27 @@
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--gold);
         }
+        .conference-nav {
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .conference-nav label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        .conference-select {
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: 200px;
+        }
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -279,7 +300,25 @@
     </nav>
     <main class="main">
 <h1 style="font-family: 'Playfair Display', serif; margin-bottom: 1.5rem; color: var(--primary);">Conference Standings — 2025 Season</h1>
-<div class="conference-standings">
+<div class="conference-nav">
+<label for="conf-select">Jump to Conference:</label>
+<select id="conf-select" class="conference-select" onchange="window.location.hash=this.value">
+<option value="">Select a conference...</option>
+<option value="acc">ACC</option>
+<option value="american-athletic">American Athletic</option>
+<option value="big-12">Big 12</option>
+<option value="big-ten">Big Ten</option>
+<option value="conference-usa">Conference USA</option>
+<option value="fbs-independents">FBS Independents</option>
+<option value="independent">Independent</option>
+<option value="mid-american">Mid-American</option>
+<option value="mountain-west">Mountain West</option>
+<option value="pac-12">Pac-12</option>
+<option value="sec">SEC</option>
+<option value="sun-belt">Sun Belt</option>
+</select>
+</div>
+<div class="conference-standings" id="acc">
 <h3>ACC</h3>
 <table class="rankings-table">
 <thead>
@@ -299,7 +338,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="american-athletic">
 <h3>American Athletic</h3>
 <table class="rankings-table">
 <thead>
@@ -319,7 +358,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="big-12">
 <h3>Big 12</h3>
 <table class="rankings-table">
 <thead>
@@ -339,7 +378,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="big-ten">
 <h3>Big Ten</h3>
 <table class="rankings-table">
 <thead>
@@ -359,7 +398,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="conference-usa">
 <h3>Conference USA</h3>
 <table class="rankings-table">
 <thead>
@@ -379,7 +418,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="fbs-independents">
 <h3>FBS Independents</h3>
 <table class="rankings-table">
 <thead>
@@ -391,7 +430,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="independent">
 <h3>Independent</h3>
 <table class="rankings-table">
 <thead>
@@ -403,7 +442,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="mid-american">
 <h3>Mid-American</h3>
 <table class="rankings-table">
 <thead>
@@ -423,7 +462,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="mountain-west">
 <h3>Mountain West</h3>
 <table class="rankings-table">
 <thead>
@@ -443,7 +482,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="pac-12">
 <h3>Pac-12</h3>
 <table class="rankings-table">
 <thead>
@@ -455,7 +494,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="sec">
 <h3>SEC</h3>
 <table class="rankings-table">
 <thead>
@@ -475,7 +514,7 @@
 </tbody>
 </table>
 </div>
-<div class="conference-standings">
+<div class="conference-standings" id="sun-belt">
 <h3>Sun Belt</h3>
 <table class="rankings-table">
 <thead>

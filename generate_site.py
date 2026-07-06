@@ -252,6 +252,27 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--gold);
         }}
+        .conference-nav {{
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }}
+        .conference-nav label {{
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }}
+        .conference-select {{
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: 200px;
+        }}
         @media (max-width: 768px) {{
             .header-content {{
                 flex-direction: column;
@@ -337,9 +358,20 @@ def generate_conference_standings(results, season):
     
     html = f'<h1 style="font-family: \'Playfair Display\', serif; margin-bottom: 1.5rem; color: var(--primary);">Conference Standings — {season} Season</h1>\n'
     
+    # Conference dropdown
+    html += '<div class="conference-nav">\n'
+    html += '<label for="conf-select">Jump to Conference:</label>\n'
+    html += '<select id="conf-select" class="conference-select" onchange="window.location.hash=this.value">\n'
+    html += '<option value="">Select a conference...</option>\n'
     for conf_name in sorted(conferences.keys()):
+        conf_id = conf_name.lower().replace(' ', '-').replace('&', 'and')
+        html += f'<option value="{conf_id}">{conf_name}</option>\n'
+    html += '</select>\n</div>\n'
+    
+    for conf_name in sorted(conferences.keys()):
+        conf_id = conf_name.lower().replace(' ', '-').replace('&', 'and')
         teams = sorted(conferences[conf_name], key=lambda t: t.composite_score, reverse=True)
-        html += f'<div class="conference-standings">\n'
+        html += f'<div class="conference-standings" id="{conf_id}">\n'
         html += f'<h3>{conf_name}</h3>\n'
         html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>\n</thead>\n<tbody>\n'
         for rank, team in enumerate(teams[:10], 1):
