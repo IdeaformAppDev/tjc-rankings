@@ -1,18 +1,36 @@
-"""Configuration for TJC Rankings algorithm."""
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 
-# API Settings
-CFBD_API_BASE = "https://api.collegefootballdata.com"
-CFBD_API_KEY = ""  # Set via environment variable: CFBD_API_KEY
+load_dotenv()
 
-# Season Settings
-CURRENT_SEASON = 2025
-FBS_CONFERENCES = [
-    "ACC", "Big 12", "Big Ten", "SEC", "Pac-12",
-    "American Athletic", "Conference USA", "MAC",
-    "Mountain West", "Sun Belt", "FBS Independents"
+# Paths
+BASE_DIR = Path(__file__).parent.parent
+DATA_DIR = Path(os.getenv("DATA_DIR", BASE_DIR / "data"))
+DB_PATH = DATA_DIR / "cfb_rankings.db"
+
+# API
+CFBD_API_KEY = os.getenv("CFBD_API_KEY")
+CFBD_BASE_URL = "https://api.collegefootballdata.com"
+
+# Backtest scope
+PRIMARY_BACKTEST_START = 2000
+PRIMARY_BACKTEST_END = 2025
+
+# Iconic seasons for spot-checking
+ICONIC_SEASONS = [
+    1961,   # Alabama's first Bear Bryant title
+    1966,   # Notre Dame vs Michigan State tie controversy
+    1969,   # Texas vs Arkansas (Game of the Century)
+    1971,   # Nebraska's dominant team
+    1983,   # Auburn (contested — beat #1 Georgia, #1 Alabama, but no title)
+    1988,   # Notre Dame
+    1993,   # FSU vs Notre Dame split
+    1997,   # Michigan vs Nebraska split title
+    2004,   # Auburn undefeated, left out of BCS
 ]
 
-# Metric Weights (must sum to 1.0)
+# Algorithm weights (must sum to 1.0)
 WEIGHTS = {
     "win_loss": 0.20,
     "strength_of_schedule": 0.20,
@@ -25,30 +43,9 @@ WEIGHTS = {
     "ball_control": 0.02,
 }
 
-# Algorithm Settings
+# Point differential cap
+MAX_POINT_DIFF = 28
+
+# Iterative ranking
 MAX_ITERATIONS = 10
-CONVERGENCE_THRESHOLD = 2  # Stop if ≤2 teams change position
-
-# Point Differential Cap
-POINT_DIFF_CAP = 28
-
-# Quality Win Tiers
-QUALITY_WIN_TIERS = {
-    "top_10": {"min_rank": 1, "max_rank": 10, "points": 10},
-    "top_25": {"min_rank": 11, "max_rank": 25, "points": 7},
-    "top_40": {"min_rank": 26, "max_rank": 40, "points": 4},
-}
-
-# Championship Behavior Scoring
-CHAMP_BEHAVIOR = {
-    "close_win": 1,           # Win by ≤7 points
-    "comeback_win": 2,       # Trailed in 4th quarter
-    "road_win": 1,           # Win on the road
-    "bad_loss": -3,          # Loss to unranked team (outside Top 50)
-    "bad_blowout_loss": -5,  # Loss by >21 to unranked team
-    "upset_loss": -4,        # Loss as heavy favorite (ranked 15+ spots higher)
-    "close_loss_quality": 2,  # Lose by ≤7 to Top 25
-}
-
-# Garbage Time Threshold (4th quarter, leading by >21)
-GARBAGE_TIME_LEAD = 21
+RANKING_CONVERGENCE_THRESHOLD = 2  # teams changing positions
