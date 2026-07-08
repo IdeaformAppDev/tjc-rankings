@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Rankings — 2015 Season</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #c53030;
+            --gold: #d69e2e;
+            --bg: #f7fafc;
+            --text: #2d3748;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            background: white;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        .brand-text { flex: 1; }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .brand-name span { color: var(--gold); }
+        .brand-tagline {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+        .nav {
+            background: white;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            padding: 0.5rem 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .season-dropdown {
+            margin-left: auto;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .rankings-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .rankings-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        .rankings-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+        .rankings-table tr:hover { background: #f7fafc; }
+        .rank {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            width: 60px;
+        }
+        .team-name {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        a.team-name:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        .conference {
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        .record {
+            font-weight: 600;
+            text-align: center;
+        }
+        .score {
+            font-weight: 700;
+            text-align: right;
+            color: var(--primary);
+        }
+        .metric-cell {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .metric-high { color: #38a169; font-weight: 600; }
+        .metric-mid { color: #d69e2e; }
+        .metric-low { color: var(--accent); }
+        .h2h-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            margin-left: 0.3rem;
+            font-weight: 700;
+        }
+        .metrics-legend {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .metrics-legend h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .metrics-legend p {
+            font-size: 0.85rem;
+            color: #718096;
+            line-height: 1.5;
+        }
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer-brand span { color: var(--gold); }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-disclaimer {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .content-section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .metric-list {
+            list-style: none;
+            padding: 0;
+        }
+        .metric-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .metric-weight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .conference-standings {
+            margin-bottom: 2rem;
+        }
+        .conference-standings h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gold);
+        }
+        .conference-nav {
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .conference-nav label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        .conference-select {
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: 200px;
+        }
+        /* Team Detail Page */
+        .team-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .team-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .team-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .team-header .team-meta {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+        .games-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .games-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        .games-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .win { color: #38a169; font-weight: 600; }
+        .loss { color: var(--accent); font-weight: 600; }
+        /* Social Sharing */
+        .share-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .share-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .share-btn:hover { opacity: 0.85; }
+        .share-x { background: #000; color: white; }
+        .share-fb { background: #1877f2; color: white; }
+        .share-copy { background: #e2e8f0; color: var(--text); }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .logo { width: 80px; height: 80px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-content {
+                overflow-x: auto;
+                gap: 1rem;
+            }
+            .season-dropdown { margin-left: 0; }
+            .team-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/tjc-rankings-logo.png" alt="TJC Rankings Logo">
+            </div>
+            <div class="brand-text">
+                <div class="brand-name">TJC <span>Rankings</span></div>
+                <div class="brand-tagline">Computer College Football Rankings</div>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html">Rankings</a>
+            <a href="conferences.html">Conferences</a>
+            <a href="about.html">About the Model</a>
+            <select class="season-dropdown" onchange="window.location.href=this.value">
+                <option value="">Past Seasons</option>
+                <option value="2025.html">2025</option>
+                <option value="2024.html">2024</option>
+                <option value="2023.html">2023</option>
+                <option value="2022.html">2022</option>
+                <option value="2021.html">2021</option>
+                <option value="2020.html">2020</option>
+                <option value="2019.html">2019</option>
+                <option value="2018.html">2018</option>
+                <option value="2017.html">2017</option>
+                <option value="2016.html">2016</option>
+                <option value="2015.html">2015</option>
+                <option value="">—— Historic ——</option>
+                <option value="2007.html">2007 (Kansas #1)</option>
+                <option value="2004.html">2004 (Auburn Screwed)</option>
+                <option value="1997.html">1997 (Split Title)</option>
+                <option value="1993.html">1993 (FSU #1)</option>
+                <option value="1988.html">1988 (ND over Miami)</option>
+                <option value="1983.html">1983 (Auburn Vindicated)</option>
+                <option value="1971.html">1971 (Nebraska)</option>
+                <option value="1969.html">1969 (Texas/PSU)</option>
+                <option value="1966.html">1966 (ND/MSU)</option>
+                <option value="1961.html">1961 (Alabama)</option>
+            </select>
+        </div>
+    </nav>
+    <main class="main">
+<h1 style="font-family: 'Playfair Display', serif; margin-bottom: 1.5rem; color: var(--primary);">Final Rankings — 2015 Season</h1>
+<div class="metrics-legend">
+<h3>📊 Understanding the Metrics</h3>
+<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (15%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (10%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>
+<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>
+</div>
+<table class="rankings-table">
+<thead>
+<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th></tr>
+</thead>
+<tbody>
+<tr><td class="rank">1</td><td><a href="team-2015-alabama.html" class="team-name">Alabama</a></td><td class="conference">SEC</td><td class="record">13-1</td><td class="score">67.2</td><td class="metric-cell metric-high">93</td><td class="metric-cell metric-mid">65</td><td class="metric-cell metric-mid">69</td><td class="metric-cell metric-high">82</td><td class="metric-cell metric-mid">73</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">62</td></tr>
+<tr><td class="rank">2</td><td><a href="team-2015-clemson.html" class="team-name">Clemson</a></td><td class="conference">ACC</td><td class="record">13-1</td><td class="score">63.1</td><td class="metric-cell metric-high">93</td><td class="metric-cell metric-mid">54</td><td class="metric-cell metric-mid">64</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">74</td></tr>
+<tr><td class="rank">3</td><td><a href="team-2015-oklahoma.html" class="team-name">Oklahoma</a></td><td class="conference">Big 12</td><td class="record">11-2</td><td class="score">60.5</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-mid">54</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-high">88</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">50</td></tr>
+<tr><td class="rank">4</td><td><a href="team-2015-michigan-state.html" class="team-name">Michigan State</a> <span class="h2h-badge">↗</span></td><td class="conference">Big Ten</td><td class="record">12-2</td><td class="score">58.1</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-mid">59</td><td class="metric-cell metric-mid">64</td><td class="metric-cell metric-mid">64</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">47</td></tr>
+<tr><td class="rank">5</td><td><a href="team-2015-stanford.html" class="team-name">Stanford</a></td><td class="conference">Pac-12</td><td class="record">12-2</td><td class="score">59.1</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">53</td></tr>
+<tr><td class="rank">6</td><td><a href="team-2015-ohio-state.html" class="team-name">Ohio State</a></td><td class="conference">Big Ten</td><td class="record">12-1</td><td class="score">60.0</td><td class="metric-cell metric-high">92</td><td class="metric-cell metric-low">49</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-high">87</td><td class="metric-cell metric-mid">72</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">62</td></tr>
+<tr><td class="rank">7</td><td><a href="team-2015-houston.html" class="team-name">Houston</a></td><td class="conference">American Athletic</td><td class="record">12-1</td><td class="score">56.6</td><td class="metric-cell metric-high">92</td><td class="metric-cell metric-low">38</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-high">84</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">53</td></tr>
+<tr><td class="rank">8</td><td><a href="team-2015-tcu.html" class="team-name">TCU</a></td><td class="conference">Big 12</td><td class="record">10-2</td><td class="score">53.9</td><td class="metric-cell metric-high">83</td><td class="metric-cell metric-low">48</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-mid">69</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">62</td></tr>
+<tr><td class="rank">9</td><td><a href="team-2015-ole-miss.html" class="team-name">Ole Miss</a> <span class="h2h-badge">↗</span></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">51.2</td><td class="metric-cell metric-high">75</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-mid">74</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">20</td></tr>
+<tr><td class="rank">10</td><td><a href="team-2015-michigan.html" class="team-name">Michigan</a></td><td class="conference">Big Ten</td><td class="record">10-3</td><td class="score">52.4</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-mid">68</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">29</td></tr>
+<tr><td class="rank">11</td><td><a href="team-2015-notre-dame.html" class="team-name">Notre Dame</a></td><td class="conference">FBS Independents</td><td class="record">10-3</td><td class="score">52.4</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-mid">68</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">50</td></tr>
+<tr><td class="rank">12</td><td><a href="team-2015-lsu.html" class="team-name">LSU</a> <span class="h2h-badge">↗</span></td><td class="conference">SEC</td><td class="record">9-3</td><td class="score">52.9</td><td class="metric-cell metric-high">75</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-mid">65</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">47</td></tr>
+<tr><td class="rank">13</td><td><a href="team-2015-iowa.html" class="team-name">Iowa</a></td><td class="conference">Big Ten</td><td class="record">11-2</td><td class="score">52.0</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-low">47</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-mid">68</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">41</td></tr>
+<tr><td class="rank">14</td><td><a href="team-2015-wisconsin.html" class="team-name">Wisconsin</a></td><td class="conference">Big Ten</td><td class="record">10-3</td><td class="score">51.9</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-low">43</td><td class="metric-cell metric-low">49</td><td class="metric-cell metric-mid">73</td><td class="metric-cell metric-mid">72</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">53</td></tr>
+<tr><td class="rank">15</td><td><a href="team-2015-western-kentucky.html" class="team-name">Western Kentucky</a></td><td class="conference">Conference USA</td><td class="record">12-2</td><td class="score">52.2</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-low">37</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-high">83</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">41</td></tr>
+<tr><td class="rank">16</td><td><a href="team-2015-baylor.html" class="team-name">Baylor</a></td><td class="conference">Big 12</td><td class="record">9-3</td><td class="score">51.0</td><td class="metric-cell metric-high">75</td><td class="metric-cell metric-low">49</td><td class="metric-cell metric-low">50</td><td class="metric-cell metric-high">83</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">38</td></tr>
+<tr><td class="rank">17</td><td><a href="team-2015-app-state.html" class="team-name">App State</a></td><td class="conference">Sun Belt</td><td class="record">10-2</td><td class="score">51.0</td><td class="metric-cell metric-high">83</td><td class="metric-cell metric-low">38</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-mid">62</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">50</td></tr>
+<tr><td class="rank">18</td><td><a href="team-2015-navy.html" class="team-name">Navy</a></td><td class="conference">American Athletic</td><td class="record">10-2</td><td class="score">50.9</td><td class="metric-cell metric-high">83</td><td class="metric-cell metric-low">41</td><td class="metric-cell metric-mid">52</td><td class="metric-cell metric-mid">73</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">44</td></tr>
+<tr><td class="rank">19</td><td><a href="team-2015-toledo.html" class="team-name">Toledo</a></td><td class="conference">Mid-American</td><td class="record">10-2</td><td class="score">50.4</td><td class="metric-cell metric-high">83</td><td class="metric-cell metric-low">37</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-high">75</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">44</td></tr>
+<tr><td class="rank">20</td><td><a href="team-2015-utah.html" class="team-name">Utah</a></td><td class="conference">Pac-12</td><td class="record">10-3</td><td class="score">50.3</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-low">48</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-mid">65</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">32</td></tr>
+<tr><td class="rank">21</td><td><a href="team-2015-florida-state.html" class="team-name">Florida State</a></td><td class="conference">ACC</td><td class="record">9-3</td><td class="score">50.1</td><td class="metric-cell metric-high">75</td><td class="metric-cell metric-low">48</td><td class="metric-cell metric-low">49</td><td class="metric-cell metric-mid">72</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">32</td></tr>
+<tr><td class="rank">22</td><td><a href="team-2015-florida.html" class="team-name">Florida</a> <span class="h2h-badge">↗</span></td><td class="conference">SEC</td><td class="record">10-4</td><td class="score">48.0</td><td class="metric-cell metric-mid">71</td><td class="metric-cell metric-mid">54</td><td class="metric-cell metric-low">49</td><td class="metric-cell metric-mid">59</td><td class="metric-cell metric-mid">66</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">17</td></tr>
+<tr><td class="rank">23</td><td><a href="team-2015-north-carolina.html" class="team-name">North Carolina</a></td><td class="conference">ACC</td><td class="record">9-3</td><td class="score">49.8</td><td class="metric-cell metric-high">75</td><td class="metric-cell metric-low">48</td><td class="metric-cell metric-low">49</td><td class="metric-cell metric-mid">74</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">41</td></tr>
+<tr><td class="rank">24</td><td><a href="team-2015-mississippi-state.html" class="team-name">Mississippi State</a></td><td class="conference">SEC</td><td class="record">8-4</td><td class="score">48.5</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-low">47</td><td class="metric-cell metric-mid">64</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">23</td></tr>
+<tr><td class="rank">25</td><td><a href="team-2015-tennessee.html" class="team-name">Tennessee</a></td><td class="conference">SEC</td><td class="record">8-4</td><td class="score">49.9</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-low">46</td><td class="metric-cell metric-mid">73</td><td class="metric-cell metric-mid">59</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">35</td></tr>
+</tbody>
+</table>
+
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">TJC <span>Rankings</span></div>
+            <div class="footer-links">
+                <a href="about.html">About the Model</a>
+                <a href="#">Data Sources</a>
+                <a href="https://github.com/IdeaformAppDev/tjc-rankings" target="_blank">GitHub ↗</a>
+                <a href="about.html">Methodology</a>
+            </div>
+            <div class="footer-disclaimer">
+                Rankings generated algorithmically. No human bias, no conference favoritism — just math.
+                Data corrections welcome via GitHub issues.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

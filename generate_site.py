@@ -8,7 +8,7 @@ import sqlite3
 import urllib.parse
 
 # Generate rankings for all seasons (modern + iconic)
-seasons = [1961, 1966, 1969, 1971, 1983, 1988, 1993, 1997, 2004, 2007, 2021, 2022, 2023, 2024, 2025]
+seasons = [1961, 1966, 1969, 1971, 1983, 1988, 1993, 1997, 2004, 2007, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 all_rankings = {}
 
 for season in seasons:
@@ -457,6 +457,12 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
                 <option value="2023.html">2023</option>
                 <option value="2022.html">2022</option>
                 <option value="2021.html">2021</option>
+                <option value="2020.html">2020</option>
+                <option value="2019.html">2019</option>
+                <option value="2018.html">2018</option>
+                <option value="2017.html">2017</option>
+                <option value="2016.html">2016</option>
+                <option value="2015.html">2015</option>
                 <option value="">—— Historic ——</option>
                 <option value="2007.html">2007 (Kansas #1)</option>
                 <option value="2004.html">2004 (Auburn Screwed)</option>
