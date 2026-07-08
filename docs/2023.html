@@ -167,6 +167,16 @@
         .metric-high { color: #38a169; font-weight: 600; }
         .metric-mid { color: #d69e2e; }
         .metric-low { color: var(--accent); }
+        .h2h-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            margin-left: 0.3rem;
+            font-weight: 700;
+        }
         .metrics-legend {
             background: white;
             padding: 1rem;
@@ -431,7 +441,8 @@
 <h1 style="font-family: 'Playfair Display', serif; margin-bottom: 1.5rem; color: var(--primary);">Final Rankings — 2023 Season</h1>
 <div class="metrics-legend">
 <h3>📊 Understanding the Metrics</h3>
-<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (28%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (7%) • <strong>CB:</strong> Championship Behavior (10%)</p>
+<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (15%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (10%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>
+<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>
 </div>
 <table class="rankings-table">
 <thead>
@@ -440,7 +451,7 @@
 <tbody>
 <tr><td class="rank">1</td><td><a href="team-2023-michigan.html" class="team-name">Michigan</a></td><td class="conference">Big Ten</td><td class="record">15-0</td><td class="score">68.8</td><td class="metric-cell metric-high">100</td><td class="metric-cell metric-mid">54</td><td class="metric-cell metric-mid">68</td><td class="metric-cell metric-high">95</td><td class="metric-cell metric-high">79</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-high">77</td></tr>
 <tr><td class="rank">2</td><td><a href="team-2023-washington.html" class="team-name">Washington</a></td><td class="conference">Pac-12</td><td class="record">14-1</td><td class="score">63.5</td><td class="metric-cell metric-high">93</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-mid">65</td><td class="metric-cell metric-mid">70</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-high">86</td></tr>
-<tr><td class="rank">3</td><td><a href="team-2023-texas.html" class="team-name">Texas</a></td><td class="conference">Big 12</td><td class="record">12-2</td><td class="score">61.6</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-high">80</td><td class="metric-cell metric-mid">68</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">65</td></tr>
+<tr><td class="rank">3</td><td><a href="team-2023-texas.html" class="team-name">Texas</a> <span class="h2h-badge">↗</span></td><td class="conference">Big 12</td><td class="record">12-2</td><td class="score">61.6</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-high">80</td><td class="metric-cell metric-mid">68</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">65</td></tr>
 <tr><td class="rank">4</td><td><a href="team-2023-alabama.html" class="team-name">Alabama</a></td><td class="conference">SEC</td><td class="record">11-2</td><td class="score">62.0</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-mid">71</td><td class="metric-cell metric-mid">68</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">68</td></tr>
 <tr><td class="rank">5</td><td><a href="team-2023-georgia.html" class="team-name">Georgia</a></td><td class="conference">SEC</td><td class="record">12-1</td><td class="score">61.4</td><td class="metric-cell metric-high">92</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-high">91</td><td class="metric-cell metric-mid">71</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">62</td></tr>
 <tr><td class="rank">6</td><td><a href="team-2023-florida-state.html" class="team-name">Florida State</a></td><td class="conference">ACC</td><td class="record">12-1</td><td class="score">59.7</td><td class="metric-cell metric-high">92</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-mid">62</td><td class="metric-cell metric-mid">73</td><td class="metric-cell metric-mid">64</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">59</td></tr>
@@ -461,7 +472,7 @@
 <tr><td class="rank">21</td><td><a href="team-2023-kansas-state.html" class="team-name">Kansas State</a></td><td class="conference">Big 12</td><td class="record">8-4</td><td class="score">49.4</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-low">46</td><td class="metric-cell metric-mid">74</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">23</td></tr>
 <tr><td class="rank">22</td><td><a href="team-2023-louisville.html" class="team-name">Louisville</a></td><td class="conference">ACC</td><td class="record">9-4</td><td class="score">48.3</td><td class="metric-cell metric-mid">69</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-low">46</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-mid">59</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">29</td></tr>
 <tr><td class="rank">23</td><td><a href="team-2023-tulane.html" class="team-name">Tulane</a></td><td class="conference">American Athletic</td><td class="record">10-3</td><td class="score">47.9</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-low">39</td><td class="metric-cell metric-low">48</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-mid">62</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">50</td></tr>
-<tr><td class="rank">24</td><td><a href="team-2023-nc-state.html" class="team-name">NC State</a></td><td class="conference">ACC</td><td class="record">8-4</td><td class="score">47.1</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-mid">50</td><td class="metric-cell metric-low">45</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">38</td></tr>
+<tr><td class="rank">24</td><td><a href="team-2023-nc-state.html" class="team-name">NC State</a> <span class="h2h-badge">↗</span></td><td class="conference">ACC</td><td class="record">8-4</td><td class="score">47.1</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-mid">50</td><td class="metric-cell metric-low">45</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">38</td></tr>
 <tr><td class="rank">25</td><td><a href="team-2023-memphis.html" class="team-name">Memphis</a></td><td class="conference">American Athletic</td><td class="record">9-3</td><td class="score">47.1</td><td class="metric-cell metric-high">75</td><td class="metric-cell metric-low">40</td><td class="metric-cell metric-low">47</td><td class="metric-cell metric-mid">64</td><td class="metric-cell metric-low">45</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">53</td></tr>
 </tbody>
 </table>

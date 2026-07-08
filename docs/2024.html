@@ -167,6 +167,16 @@
         .metric-high { color: #38a169; font-weight: 600; }
         .metric-mid { color: #d69e2e; }
         .metric-low { color: var(--accent); }
+        .h2h-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            margin-left: 0.3rem;
+            font-weight: 700;
+        }
         .metrics-legend {
             background: white;
             padding: 1rem;
@@ -431,15 +441,16 @@
 <h1 style="font-family: 'Playfair Display', serif; margin-bottom: 1.5rem; color: var(--primary);">Final Rankings — 2024 Season</h1>
 <div class="metrics-legend">
 <h3>📊 Understanding the Metrics</h3>
-<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (28%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (7%) • <strong>CB:</strong> Championship Behavior (10%)</p>
+<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (15%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (10%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>
+<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>
 </div>
 <table class="rankings-table">
 <thead>
 <tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th></tr>
 </thead>
 <tbody>
-<tr><td class="rank">1</td><td><a href="team-2024-ohio-state.html" class="team-name">Ohio State</a></td><td class="conference">Big Ten</td><td class="record">14-2</td><td class="score">63.3</td><td class="metric-cell metric-high">88</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-high">91</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">65</td></tr>
-<tr><td class="rank">2</td><td><a href="team-2024-oregon.html" class="team-name">Oregon</a></td><td class="conference">Big Ten</td><td class="record">12-1</td><td class="score">62.9</td><td class="metric-cell metric-high">92</td><td class="metric-cell metric-mid">54</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-high">78</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">74</td></tr>
+<tr><td class="rank">1</td><td><a href="team-2024-ohio-state.html" class="team-name">Ohio State</a> <span class="h2h-badge">↗</span></td><td class="conference">Big Ten</td><td class="record">14-2</td><td class="score">63.3</td><td class="metric-cell metric-high">88</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-high">91</td><td class="metric-cell metric-high">77</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">65</td></tr>
+<tr><td class="rank">2</td><td><a href="team-2024-oregon.html" class="team-name">Oregon</a> <span class="h2h-badge">↗</span></td><td class="conference">Big Ten</td><td class="record">12-1</td><td class="score">62.9</td><td class="metric-cell metric-high">92</td><td class="metric-cell metric-mid">54</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-high">78</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">74</td></tr>
 <tr><td class="rank">3</td><td><a href="team-2024-notre-dame.html" class="team-name">Notre Dame</a></td><td class="conference">FBS Independents</td><td class="record">14-2</td><td class="score">60.3</td><td class="metric-cell metric-high">88</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-mid">61</td><td class="metric-cell metric-high">87</td><td class="metric-cell metric-mid">71</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">56</td></tr>
 <tr><td class="rank">4</td><td><a href="team-2024-penn-state.html" class="team-name">Penn State</a></td><td class="conference">Big Ten</td><td class="record">13-3</td><td class="score">58.6</td><td class="metric-cell metric-high">81</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-high">80</td><td class="metric-cell metric-mid">69</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-high">77</td></tr>
 <tr><td class="rank">5</td><td><a href="team-2024-texas.html" class="team-name">Texas</a></td><td class="conference">SEC</td><td class="record">13-3</td><td class="score">57.6</td><td class="metric-cell metric-high">81</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-high">82</td><td class="metric-cell metric-mid">72</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">53</td></tr>

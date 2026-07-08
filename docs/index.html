@@ -167,6 +167,16 @@
         .metric-high { color: #38a169; font-weight: 600; }
         .metric-mid { color: #d69e2e; }
         .metric-low { color: var(--accent); }
+        .h2h-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            margin-left: 0.3rem;
+            font-weight: 700;
+        }
         .metrics-legend {
             background: white;
             padding: 1rem;
@@ -431,7 +441,8 @@
 <h1 style="font-family: 'Playfair Display', serif; margin-bottom: 1.5rem; color: var(--primary);">Final Rankings — 2025 Season</h1>
 <div class="metrics-legend">
 <h3>📊 Understanding the Metrics</h3>
-<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (28%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (7%) • <strong>CB:</strong> Championship Behavior (10%)</p>
+<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (15%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (10%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>
+<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>
 </div>
 <table class="rankings-table">
 <thead>
@@ -439,12 +450,12 @@
 </thead>
 <tbody>
 <tr><td class="rank">1</td><td><a href="team-2025-indiana.html" class="team-name">Indiana</a></td><td class="conference">Big Ten</td><td class="record">15-0</td><td class="score">70.2</td><td class="metric-cell metric-high">100</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-mid">70</td><td class="metric-cell metric-high">98</td><td class="metric-cell metric-high">76</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-high">80</td></tr>
-<tr><td class="rank">2</td><td><a href="team-2025-miami.html" class="team-name">Miami</a></td><td class="conference">ACC</td><td class="record">12-3</td><td class="score">58.7</td><td class="metric-cell metric-high">80</td><td class="metric-cell metric-mid">59</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-high">76</td><td class="metric-cell metric-mid">73</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">62</td></tr>
+<tr><td class="rank">2</td><td><a href="team-2025-miami.html" class="team-name">Miami</a> <span class="h2h-badge">↗</span></td><td class="conference">ACC</td><td class="record">12-3</td><td class="score">58.7</td><td class="metric-cell metric-high">80</td><td class="metric-cell metric-mid">59</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-high">76</td><td class="metric-cell metric-mid">73</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">62</td></tr>
 <tr><td class="rank">3</td><td><a href="team-2025-oregon.html" class="team-name">Oregon</a></td><td class="conference">Big Ten</td><td class="record">12-2</td><td class="score">59.1</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-high">81</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">59</td></tr>
 <tr><td class="rank">4</td><td><a href="team-2025-texas-tech.html" class="team-name">Texas Tech</a></td><td class="conference">Big 12</td><td class="record">11-2</td><td class="score">59.0</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-high">95</td><td class="metric-cell metric-high">76</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">29</td></tr>
 <tr><td class="rank">5</td><td><a href="team-2025-ohio-state.html" class="team-name">Ohio State</a></td><td class="conference">Big Ten</td><td class="record">11-2</td><td class="score">60.7</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-mid">59</td><td class="metric-cell metric-high">87</td><td class="metric-cell metric-high">81</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">59</td></tr>
-<tr><td class="rank">6</td><td><a href="team-2025-georgia.html" class="team-name">Georgia</a></td><td class="conference">SEC</td><td class="record">11-2</td><td class="score">57.0</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-mid">75</td><td class="metric-cell metric-mid">66</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">59</td></tr>
-<tr><td class="rank">7</td><td><a href="team-2025-ole-miss.html" class="team-name">Ole Miss</a></td><td class="conference">SEC</td><td class="record">12-2</td><td class="score">58.1</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-mid">74</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">59</td></tr>
+<tr><td class="rank">6</td><td><a href="team-2025-georgia.html" class="team-name">Georgia</a> <span class="h2h-badge">↗</span></td><td class="conference">SEC</td><td class="record">11-2</td><td class="score">57.0</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-mid">57</td><td class="metric-cell metric-mid">75</td><td class="metric-cell metric-mid">66</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">59</td></tr>
+<tr><td class="rank">7</td><td><a href="team-2025-ole-miss.html" class="team-name">Ole Miss</a> <span class="h2h-badge">↗</span></td><td class="conference">SEC</td><td class="record">12-2</td><td class="score">58.1</td><td class="metric-cell metric-high">86</td><td class="metric-cell metric-mid">51</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-mid">74</td><td class="metric-cell metric-mid">56</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">59</td></tr>
 <tr><td class="rank">8</td><td><a href="team-2025-notre-dame.html" class="team-name">Notre Dame</a></td><td class="conference">FBS Independents</td><td class="record">10-2</td><td class="score">55.6</td><td class="metric-cell metric-high">83</td><td class="metric-cell metric-low">48</td><td class="metric-cell metric-mid">55</td><td class="metric-cell metric-high">94</td><td class="metric-cell metric-mid">67</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">44</td></tr>
 <tr><td class="rank">9</td><td><a href="team-2025-james-madison.html" class="team-name">James Madison</a></td><td class="conference">Sun Belt</td><td class="record">11-2</td><td class="score">55.5</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-low">40</td><td class="metric-cell metric-mid">53</td><td class="metric-cell metric-high">81</td><td class="metric-cell metric-mid">65</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-mid">53</td></tr>
 <tr><td class="rank">10</td><td><a href="team-2025-byu.html" class="team-name">BYU</a></td><td class="conference">Big 12</td><td class="record">11-2</td><td class="score">54.3</td><td class="metric-cell metric-high">85</td><td class="metric-cell metric-mid">58</td><td class="metric-cell metric-mid">60</td><td class="metric-cell metric-mid">64</td><td class="metric-cell metric-mid">63</td><td class="metric-cell metric-low">0</td><td class="metric-cell metric-low">29</td></tr>

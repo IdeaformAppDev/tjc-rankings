@@ -187,6 +187,16 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
         .metric-high {{ color: #38a169; font-weight: 600; }}
         .metric-mid {{ color: #d69e2e; }}
         .metric-low {{ color: var(--accent); }}
+        .h2h-badge {{
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            margin-left: 0.3rem;
+            font-weight: 700;
+        }}
         .metrics-legend {{
             background: white;
             padding: 1rem;
@@ -481,7 +491,8 @@ def generate_rankings_table(results, season, week):
     # Metrics legend
     html += '<div class="metrics-legend">\n'
     html += '<h3>📊 Understanding the Metrics</h3>\n'
-    html += '<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (28%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (7%) • <strong>CB:</strong> Championship Behavior (10%)</p>\n'
+    html += '<p><strong>WL:</strong> Win/Loss (15%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (15%) • <strong>PD:</strong> Point Differential (10%, capped at ±28/game) • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (10%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>\n'
+    html += '<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>\n'
     html += '</div>\n'
     
     html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th></tr>\n</thead>\n<tbody>\n'
@@ -496,7 +507,7 @@ def generate_rankings_table(results, season, week):
             elif score >= 50: return 'metric-mid'
             else: return 'metric-low'
         
-        html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a></td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td>'
+        html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a>{" <span class=\"h2h-badge\">↗</span>" if team.h2h_override else ""}</td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td>'
         html += f'<td class="metric-cell {metric_class(team.win_loss_score)}">{team.win_loss_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.sos_score)}">{team.sos_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.sor_score)}">{team.sor_score:.0f}</td>'
