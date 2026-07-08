@@ -7,15 +7,18 @@ from collections import defaultdict
 import sqlite3
 import urllib.parse
 
-# Generate rankings for all seasons
-seasons = [2021, 2022, 2023, 2024, 2025]
+# Generate rankings for all seasons (modern + iconic)
+seasons = [1961, 1966, 1969, 1971, 1983, 1988, 1993, 1997, 2004, 2007, 2021, 2022, 2023, 2024, 2025]
 all_rankings = {}
 
 for season in seasons:
-    engine = RankingEngine(season=season, week=16)
-    results, metadata = engine.run()
-    all_rankings[season] = results
-    print(f"Generated {season}: {results[0].team_name} #1")
+    try:
+        engine = RankingEngine(season=season, week=16)
+        results, metadata = engine.run()
+        all_rankings[season] = results
+        print(f"Generated {season}: {results[0].team_name} #1")
+    except Exception as e:
+        print(f"Skipping {season}: {e}")
 
 def get_header(title, rankings_active="", conferences_active="", about_active=""):
     return f"""<!DOCTYPE html>
@@ -454,6 +457,17 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
                 <option value="2023.html">2023</option>
                 <option value="2022.html">2022</option>
                 <option value="2021.html">2021</option>
+                <option value="">—— Historic ——</option>
+                <option value="2007.html">2007 (Kansas #1)</option>
+                <option value="2004.html">2004 (Auburn Screwed)</option>
+                <option value="1997.html">1997 (Split Title)</option>
+                <option value="1993.html">1993 (FSU #1)</option>
+                <option value="1988.html">1988 (ND over Miami)</option>
+                <option value="1983.html">1983 (Auburn Vindicated)</option>
+                <option value="1971.html">1971 (Nebraska)</option>
+                <option value="1969.html">1969 (Texas/PSU)</option>
+                <option value="1966.html">1966 (ND/MSU)</option>
+                <option value="1961.html">1961 (Alabama)</option>
             </select>
         </div>
     </nav>

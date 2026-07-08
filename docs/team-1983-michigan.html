@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michigan — 1983 Season — TJC Rankings</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --accent: #c53030;
+            --gold: #d69e2e;
+            --bg: #f7fafc;
+            --text: #2d3748;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            background: white;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        .brand-text { flex: 1; }
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .brand-name span { color: var(--gold); }
+        .brand-tagline {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+        .nav {
+            background: white;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            padding: 0.5rem 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        .season-dropdown {
+            margin-left: auto;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .rankings-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .rankings-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        .rankings-table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+        .rankings-table tr:hover { background: #f7fafc; }
+        .rank {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            width: 60px;
+        }
+        .team-name {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        a.team-name:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        .conference {
+            font-size: 0.875rem;
+            color: #718096;
+        }
+        .record {
+            font-weight: 600;
+            text-align: center;
+        }
+        .score {
+            font-weight: 700;
+            text-align: right;
+            color: var(--primary);
+        }
+        .metric-cell {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .metric-high { color: #38a169; font-weight: 600; }
+        .metric-mid { color: #d69e2e; }
+        .metric-low { color: var(--accent); }
+        .h2h-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            margin-left: 0.3rem;
+            font-weight: 700;
+        }
+        .metrics-legend {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .metrics-legend h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .metrics-legend p {
+            font-size: 0.85rem;
+            color: #718096;
+            line-height: 1.5;
+        }
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer-brand span { color: var(--gold); }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-disclaimer {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .content-section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .metric-list {
+            list-style: none;
+            padding: 0;
+        }
+        .metric-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .metric-weight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .conference-standings {
+            margin-bottom: 2rem;
+        }
+        .conference-standings h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gold);
+        }
+        .conference-nav {
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .conference-nav label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        .conference-select {
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: 200px;
+        }
+        /* Team Detail Page */
+        .team-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .team-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .team-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .team-header .team-meta {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+        .games-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .games-table th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        .games-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .win { color: #38a169; font-weight: 600; }
+        .loss { color: var(--accent); font-weight: 600; }
+        /* Social Sharing */
+        .share-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .share-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        .share-btn:hover { opacity: 0.85; }
+        .share-x { background: #000; color: white; }
+        .share-fb { background: #1877f2; color: white; }
+        .share-copy { background: #e2e8f0; color: var(--text); }
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            .logo { width: 80px; height: 80px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-content {
+                overflow-x: auto;
+                gap: 1rem;
+            }
+            .season-dropdown { margin-left: 0; }
+            .team-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/tjc-rankings-logo.png" alt="TJC Rankings Logo">
+            </div>
+            <div class="brand-text">
+                <div class="brand-name">TJC <span>Rankings</span></div>
+                <div class="brand-tagline">Computer College Football Rankings</div>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html">Rankings</a>
+            <a href="conferences.html">Conferences</a>
+            <a href="about.html">About the Model</a>
+            <select class="season-dropdown" onchange="window.location.href=this.value">
+                <option value="">Past Seasons</option>
+                <option value="2025.html">2025</option>
+                <option value="2024.html">2024</option>
+                <option value="2023.html">2023</option>
+                <option value="2022.html">2022</option>
+                <option value="2021.html">2021</option>
+                <option value="">—— Historic ——</option>
+                <option value="2007.html">2007 (Kansas #1)</option>
+                <option value="2004.html">2004 (Auburn Screwed)</option>
+                <option value="1997.html">1997 (Split Title)</option>
+                <option value="1993.html">1993 (FSU #1)</option>
+                <option value="1988.html">1988 (ND over Miami)</option>
+                <option value="1983.html">1983 (Auburn Vindicated)</option>
+                <option value="1971.html">1971 (Nebraska)</option>
+                <option value="1969.html">1969 (Texas/PSU)</option>
+                <option value="1966.html">1966 (ND/MSU)</option>
+                <option value="1961.html">1961 (Alabama)</option>
+            </select>
+        </div>
+    </nav>
+    <main class="main">
+
+    <div class="team-header">
+        <div class="team-header-content">
+            <h1>Michigan</h1>
+            <div class="team-meta">1983 Season • Big Ten • Rank #10</div>
+        </div>
+    </div>
+    <div class="team-stats">
+<div class="stat-card"><div class="stat-value">9-3</div><div class="stat-label">Record</div></div>
+<div class="stat-card"><div class="stat-value">54.8</div><div class="stat-label">Composite Score</div></div>
+<div class="stat-card"><div class="stat-value">355</div><div class="stat-label">Points For</div></div>
+<div class="stat-card"><div class="stat-value">160</div><div class="stat-label">Points Against</div></div>
+<div class="stat-card"><div class="stat-value">+195</div><div class="stat-label">Point Diff</div></div>
+<div class="stat-card"><div class="stat-value">12</div><div class="stat-label">Games Played</div></div>
+</div>
+<h2 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem; color: var(--primary);">Metric Breakdown</h2>
+<div class="content-section" style="margin-bottom: 2rem;">
+<p style="margin-bottom: 1rem; color: #718096; font-size: 0.9rem;">How {team.team_name} scores across all 7 factors (0-100 scale). Higher is better.</p>
+<ul class="metric-list">
+<li>Win/Loss Record (15%) <span class="metric-weight">75.0</span></li>
+<li>Strength of Schedule (28%) <span class="metric-weight">53.5</span></li>
+<li>Strength of Record (20%) <span class="metric-weight">51.2</span></li>
+<li>Point Differential (10%) <span class="metric-weight">79.0</span></li>
+<li>Defensive Efficiency (10%) <span class="metric-weight">71.4</span></li>
+<li>Quality Wins (7%) <span class="metric-weight">0.0</span></li>
+<li>Championship Behavior (10%) <span class="metric-weight">50.0</span></li>
+</ul>
+</div>
+<div class="share-section">
+<div class="share-title">Share these rankings</div>
+<div class="share-buttons">
+<a href="https://twitter.com/intent/tweet?text=TJC%20Rankings%20has%20Michigan%20ranked%20%2310%20in%201983%20with%20a%209-3%20record%21&url=https%3A//tjcrankings.com/team-1983-michigan.html" target="_blank" class="share-btn share-x">𝕏 Share on X</a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//tjcrankings.com/team-1983-michigan.html" target="_blank" class="share-btn share-fb">f Share on Facebook</a>
+<button class="share-btn share-copy" onclick="navigator.clipboard.writeText('https://tjcrankings.com/team-1983-michigan.html');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Link',2000)">Copy Link</button>
+</div>
+</div>
+<h2 style="font-family: 'Playfair Display', serif; margin-bottom: 1rem; color: var(--primary);">Game Log</h2>
+<table class="games-table">
+<thead>
+<tr><th>Week</th><th>Type</th><th>Opponent</th><th>Result</th><th>Score</th></tr>
+</thead>
+<tbody>
+<tr><td>Week 3</td><td>Regular</td><td>vs Washington State</td><td class="win">W</td><td>20-17</td></tr>
+<tr><td>Week 4</td><td>Regular</td><td>@ Washington</td><td class="loss">L</td><td>24-25</td></tr>
+<tr><td>Week 5</td><td>Regular</td><td>@ Wisconsin</td><td class="win">W</td><td>38-21</td></tr>
+<tr><td>Week 6</td><td>Regular</td><td>vs Indiana</td><td class="win">W</td><td>43-18</td></tr>
+<tr><td>Week 7</td><td>Regular</td><td>@ Michigan State</td><td class="win">W</td><td>42-0</td></tr>
+<tr><td>Week 8</td><td>Regular</td><td>vs Northwestern</td><td class="win">W</td><td>35-0</td></tr>
+<tr><td>Week 9</td><td>Regular</td><td>vs Iowa</td><td class="win">W</td><td>16-13</td></tr>
+<tr><td>Week 10</td><td>Regular</td><td>@ Illinois</td><td class="loss">L</td><td>6-16</td></tr>
+<tr><td>Week 11</td><td>Regular</td><td>vs Purdue</td><td class="win">W</td><td>42-10</td></tr>
+<tr><td>Week 12</td><td>Regular</td><td>@ Minnesota</td><td class="win">W</td><td>58-10</td></tr>
+<tr><td>Week 13</td><td>Regular</td><td>vs Ohio State</td><td class="win">W</td><td>24-21</td></tr>
+<tr><td>Postseason</td><td>Postseason</td><td>@ Auburn</td><td class="loss">L</td><td>7-9</td></tr>
+</tbody>
+</table>
+
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">TJC <span>Rankings</span></div>
+            <div class="footer-links">
+                <a href="about.html">About the Model</a>
+                <a href="#">Data Sources</a>
+                <a href="https://github.com/IdeaformAppDev/tjc-rankings" target="_blank">GitHub ↗</a>
+                <a href="about.html">Methodology</a>
+            </div>
+            <div class="footer-disclaimer">
+                Rankings generated algorithmically. No human bias, no conference favoritism — just math.
+                Data corrections welcome via GitHub issues.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
