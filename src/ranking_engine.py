@@ -286,15 +286,16 @@ class RankingEngine:
                 
                 # Tiered scoring based on opponent rank
                 # Use composite score as proxy for ranking
-                if opp.composite_score >= 85:  # Approx top 10
+                # Typical scores: top team ~65-68, top 10 ~55-65, top 25 ~50-55
+                if opp.composite_score >= 60:  # Approx top 10
                     qual_points += 10
-                elif opp.composite_score >= 75:  # Approx top 25
+                elif opp.composite_score >= 55:  # Approx top 25
                     qual_points += 7
-                elif opp.composite_score >= 65:  # Approx top 40
+                elif opp.composite_score >= 50:  # Approx top 40
                     qual_points += 4
                 
-                # Close losses to quality opponents
-                if margin <= 7 and opp.composite_score >= 75:
+                # Close losses to quality opponents (within 7 points)
+                if margin <= 7 and opp.composite_score >= 55:
                     qual_points += 2
             
             # Normalize to 0-100 (cap at ~50 points max)
