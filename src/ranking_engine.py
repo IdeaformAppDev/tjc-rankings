@@ -53,12 +53,12 @@ class RankingEngine:
     
     # Weights from spec - adjusted to boost SOS and reduce win/loss
     WEIGHTS = {
-        'win_loss': 0.15,    # Reduced from 0.20
-        'sos': 0.25,         # Increased from 0.20
-        'sor': 0.15,
-        'point_diff': 0.10,
+        'win_loss': 0.10,    # Don't overvalue raw wins
+        'sos': 0.25,         # Schedule matters
+        'sor': 0.20,         # Strength of record is key
+        'point_diff': 0.05,  # Reduced - blowouts against bad teams shouldn't count
         'def_eff': 0.10,
-        'qual_wins': 0.10,
+        'qual_wins': 0.15,   # Boosted - beating good teams should matter more
         'champ_behavior': 0.10,
         'special_teams': 0.03,
         'ball_control': 0.02
@@ -135,14 +135,28 @@ class RankingEngine:
         return game['home_team']
     
     def calculate_win_loss(self, team_metrics: Dict[str, TeamMetrics]) -> None:
-        """Calculate win/loss percentage (0-100 scale)."""
+        """Calculate schedule-aware win/loss score.
+        
+        Blends raw win percentage with SOR to prevent teams from
+        ranking highly on record alone against weak schedules.
+        """
+        # First calculate raw win percentages
+        raw_scores = {}
         for tm in team_metrics.values():
             total = tm.wins + tm.losses + tm.ties
             if total > 0:
-                # Win pct scaled to 0-100
-                tm.win_loss_score = (tm.wins + 0.5 * tm.ties) / total * 100
+                raw_scores[tm.team_name] = (tm.wins + 0.5 * tm.ties) / total * 100
             else:
-                tm.win_loss_score = 50.0  # Neutral for no games
+                raw_scores[tm.team_name] = 50.0
+        
+        # Calculate SOR (Strength of Record)
+        self.calculate_sor(team_metrics)
+        
+        # Blend: 30% raw win pct, 70% SOR (schedule-adjusted)
+        for tm in team_metrics.values():
+            raw = raw_scores[tm.team_name]
+            sor = tm.sor_score
+            tm.win_loss_score = (raw * 0.30) + (sor * 0.70)
     
     def get_conference_tier(self, conference: str, season: int) -> float:
         """Get conference strength tier multiplier.
@@ -248,17 +262,48 @@ class RankingEngine:
             else:
                 tm.sor_score = 50.0
     
-    def calculate_point_diff(self, team_metrics: Dict[str, TeamMetrics]) -> None:
-        """Calculate point differential with 28-point cap."""
-        differentials = []
+    def calculate_point_diff(self, team_metrics: Dict[str, TeamMetrics],
+                             games: List[sqlite3.Row]) -> None:
+        """Calculate point differential with opponent-aware capping.
         
+        Blowouts against weak opponents are capped more heavily than
+        close wins against strong opponents.
+        """
         for tm in team_metrics.values():
-            if tm.games_played > 0:
-                avg_diff = (tm.points_for - tm.points_against) / tm.games_played
-                # Cap at ±28
-                capped_diff = max(-28, min(28, avg_diff))
+            if tm.games_played == 0:
+                tm.point_diff_score = 50.0
+                continue
+            
+            team_games = self.get_team_games(tm.team_name, games)
+            weighted_diffs = []
+            
+            for game in team_games:
+                opp_name = self.get_opponent_name(game, tm.team_name)
+                if opp_name not in team_metrics:
+                    continue
+                
+                opp = team_metrics[opp_name]
+                margin = self.get_team_points(game, tm.team_name) - \
+                        self.get_opponent_points(game, tm.team_name)
+                
+                # Cap margin based on opponent strength
+                # Weak opponent (composite < 45): cap at ±7 (one score)
+                # Medium opponent (45-55): cap at ±14 (two scores)
+                # Strong opponent (55+): cap at ±28 (four scores)
+                if opp.composite_score < 45:
+                    cap = 7
+                elif opp.composite_score < 55:
+                    cap = 14
+                else:
+                    cap = 28
+                
+                capped_margin = max(-cap, min(cap, margin))
+                weighted_diffs.append(capped_margin)
+            
+            if weighted_diffs:
+                avg_diff = sum(weighted_diffs) / len(weighted_diffs)
                 # Scale to 0-100: -28 = 0, 0 = 50, +28 = 100
-                tm.point_diff_score = (capped_diff + 28) / 56 * 100
+                tm.point_diff_score = (avg_diff + 28) / 56 * 100
             else:
                 tm.point_diff_score = 50.0
     
@@ -668,7 +713,7 @@ class RankingEngine:
             self.calculate_win_loss(team_metrics)
             self.calculate_sos(team_metrics, games)
             self.calculate_sor(team_metrics)
-            self.calculate_point_diff(team_metrics)
+            self.calculate_point_diff(team_metrics, games)
             self.calculate_def_eff(team_metrics, games)
             self.calculate_qual_wins(team_metrics, games)
             self.calculate_champ_behavior(team_metrics, games)
