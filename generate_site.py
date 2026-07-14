@@ -736,14 +736,27 @@ about_content = """
 <div class="content-section">
     <h2>7 Metrics (Weighted)</h2>
     <ul class="metric-list">
-        <li>Win/Loss Record <span class="metric-weight">15%</span></li>
-        <li>Strength of Schedule <span class="metric-weight">28%</span></li>
+        <li>Win/Loss Record <span class="metric-weight">10%</span></li>
+        <li>Strength of Schedule <span class="metric-weight">25%</span></li>
         <li>Strength of Record <span class="metric-weight">20%</span></li>
-        <li>Point Differential <span class="metric-weight">10%</span> (capped at ±28/game)</li>
+        <li>Point Differential (capped at ±28/game, opponent-aware) <span class="metric-weight">5%</span></li>
         <li>Defensive Efficiency <span class="metric-weight">10%</span></li>
-        <li>Quality Wins <span class="metric-weight">7%</span></li>
+        <li>Quality Wins <span class="metric-weight">15%</span></li>
         <li>Championship Behavior <span class="metric-weight">10%</span></li>
     </ul>
+</div>
+
+<div class="content-section">
+    <h2>Championship Behavior</h2>
+    <p>A composite score measuring how a team performs in high-leverage situations:</p>
+    <ul style="margin-left: 1.5rem; line-height: 1.8;">
+        <li><strong>Close wins</strong> (margin ≤ 7): +1 point — shows grit in tight games</li>
+        <li><strong>Road wins:</strong> +1 point — shows you can win away from home</li>
+        <li><strong>Loss to unranked</strong> (opponent composite < 60): −3 points</li>
+        <li><strong>Blowout loss</strong> (margin > 21): −5 points — worst penalty</li>
+        <li><strong>Upset loss</strong> (you were ranked 15+ spots higher): −4 points</li>
+    </ul>
+    <p>Normalized to 0-100 (center at 50). Above 50 = good championship behavior. Below 50 = concerning losses.</p>
 </div>
 
 <div class="content-section">
