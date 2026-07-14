@@ -552,9 +552,24 @@ class RankingEngine:
                 if changed:
                     break
         
-        # Re-assign ranks
+        # Clear all H2H override flags - we will recompute based on final rankings
+        for tm in rankings:
+            tm.h2h_override = False
+        
+        # Re-assign ranks and compute which teams are actually ranked above
+        # a team with higher composite due to H2H
         for i, tm in enumerate(rankings, 1):
             tm.overall_rank = i
+            
+            # Check if any team below has a higher composite score AND lost to this team
+            for j in range(i, len(rankings)):
+                below = rankings[j]
+                if below.composite_score > tm.composite_score:
+                    # tm is ranked above below despite worse composite
+                    # Check if tm beat below head-to-head
+                    if tm.team_name in h2h_wins and below.team_name in h2h_wins[tm.team_name]:
+                        tm.h2h_override = True
+                        break
         
         return rankings
     
