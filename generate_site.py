@@ -473,7 +473,7 @@ def get_header(title, rankings_active="", conferences_active="", about_active=""
                 <option value="1971.html">1971 (Nebraska)</option>
                 <option value="1969.html">1969 (Texas/PSU)</option>
                 <option value="1966.html">1966 (ND/MSU)</option>
-                <option value="1961.html">1961 (Alabama)</option>
+                <option value="1961.html">1961 (Bryant's First at Alabama)</option>
             </select>
         </div>
     </nav>
