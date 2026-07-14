@@ -637,7 +637,7 @@ def generate_team_page(team, season, results):
     html += f'<li>Strength of Record (20%) <span class="metric-weight">{team.sor_score:.1f}</span></li>\n'
     html += f'<li>Point Differential (5%) <span class="metric-weight">{team.point_diff_score:.1f}</span></li>\n'
     html += f'<li>Defensive Efficiency (10%) <span class="metric-weight">{team.def_eff_score:.1f}</span></li>\n'
-    html += f'<li>Quality Wins (7%) <span class="metric-weight">{team.qual_wins_score:.1f}</span></li>\n'
+    html += f'<li>Quality Wins (15%) <span class="metric-weight">{team.qual_wins_score:.1f}</span></li>\n'
     html += f'<li>Championship Behavior (10%) <span class="metric-weight">{team.champ_behavior_score:.1f}</span></li>\n'
     html += '</ul>\n'
     html += '</div>\n'
