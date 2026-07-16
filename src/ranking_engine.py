@@ -351,6 +351,10 @@ class RankingEngine:
     def calculate_champ_behavior(self, team_metrics: Dict[str, TeamMetrics],
                                 games: List[sqlite3.Row]) -> None:
         """Calculate championship behavior metrics."""
+        # Build temporary ranking from current composite scores
+        sorted_teams = sorted(team_metrics.values(), key=lambda x: x.composite_score, reverse=True)
+        temp_ranks = {tm.team_name: i+1 for i, tm in enumerate(sorted_teams)}
+        
         for tm in team_metrics.values():
             team_games = self.get_team_games(tm.team_name, games)
             behavior_points = 0
@@ -372,15 +376,19 @@ class RankingEngine:
                     # Bad loss penalty
                     opp_name = self.get_opponent_name(game, tm.team_name)
                     if opp_name in team_metrics:
-                        opp = team_metrics[opp_name]
-                        # Loss to unranked (low composite)
-                        if opp.composite_score < 60:
+                        opp_rank = temp_ranks.get(opp_name, 999)
+                        team_rank = temp_ranks.get(tm.team_name, 999)
+                        
+                        # Loss to unranked (outside top 25)
+                        if opp_rank > 25:
                             behavior_points -= 3
+                        
                         # Blowout loss
                         if margin > 21:
                             behavior_points -= 5
-                        # Upset loss (ranked 15+ spots higher)
-                        if tm.composite_score - opp.composite_score > 15:
+                        
+                        # Upset loss (you were ranked 15+ spots higher)
+                        if team_rank - opp_rank > 15:
                             behavior_points -= 4
             
             # Normalize to 0-100 (center at 50)
