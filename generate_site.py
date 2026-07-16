@@ -512,6 +512,7 @@ def generate_rankings_table(results, season, week):
     html += '<div class="metrics-legend">\n'
     html += '<h3>📊 Understanding the Metrics</h3>\n'
     html += '<p><strong>WL:</strong> Win/Loss (10%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (capped at ±28/game, opponent-aware) 5% • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (15%) • <strong>CB:</strong> Championship Behavior (10%)</p>\n'
+    html += '<p><span style="color: #38a169; font-weight: 600;">Green</span> = Strong (75+) • <span style="color: #d69e2e;">Yellow</span> = Average (50-74) • <span style="color: var(--accent);">Red</span> = Below Average (<50)</p>\n'
     html += '<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>\n'
     html += '</div>\n'
     
@@ -741,6 +742,8 @@ about_content = """
 
 <div class="content-section">
     <h2>7 Metrics (Weighted)</h2>
+    <p>Each metric is scored on a 0-100 scale and color-coded for quick reading:</p>
+    <p><span style="color: #38a169; font-weight: 600;">Green</span> = Strong (75+) • <span style="color: #d69e2e;">Yellow</span> = Average (50–74) • <span style="color: var(--accent);">Red</span> = Below Average (&lt;50)</p>
     <ul class="metric-list">
         <li>Win/Loss Record <span class="metric-weight">10%</span></li>
         <li>Strength of Schedule <span class="metric-weight">25%</span></li>
