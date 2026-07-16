@@ -519,7 +519,10 @@ def generate_rankings_table(results, season, week):
     html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th></tr>\n</thead>\n<tbody>\n'
     
     for rank, team in enumerate(results[:25], 1):
-        record = f"{team.wins}-{team.losses}"
+        if team.ties > 0:
+            record = f"{team.wins}-{team.losses}-{team.ties}"
+        else:
+            record = f"{team.wins}-{team.losses}"
         team_slug = slugify(team.team_name)
         
         # Color-code metrics
@@ -565,7 +568,10 @@ def generate_conference_standings(results, season):
         html += f'<h3>{conf_name}</h3>\n'
         html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Record</th><th style="text-align: right;">Score</th></tr>\n</thead>\n<tbody>\n'
         for rank, team in enumerate(teams[:10], 1):
-            record = f"{team.wins}-{team.losses}"
+            if team.ties > 0:
+                record = f"{team.wins}-{team.losses}-{team.ties}"
+            else:
+                record = f"{team.wins}-{team.losses}"
             team_slug = slugify(team.team_name)
             html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a></td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td></tr>\n'
         html += '</tbody>\n</table>\n</div>\n'
@@ -598,13 +604,18 @@ def generate_team_page(team, season, results):
     # Calculate stats
     total_games = len(games)
     wins = sum(1 for g in games if (g[0] == team.team_name and g[2] > g[3]) or (g[1] == team.team_name and g[3] > g[2]))
-    losses = total_games - wins
+    ties = sum(1 for g in games if g[2] == g[3])
+    losses = total_games - wins - ties
     points_for = sum(g[2] if g[0] == team.team_name else g[3] for g in games)
     points_against = sum(g[3] if g[0] == team.team_name else g[2] for g in games)
     
     team_slug = slugify(team.team_name)
     page_url = f"https://tjcrankings.com/team-{season}-{team_slug}.html"
-    share_text = f"TJC Rankings has {team.team_name} ranked #{team_rank} in {season} with a {wins}-{losses} record!"
+    if ties > 0:
+        record_str = f"{wins}-{losses}-{ties}"
+    else:
+        record_str = f"{wins}-{losses}"
+    share_text = f"TJC Rankings has {team.team_name} ranked #{team_rank} in {season} with a {record_str} record!"
     
     html = get_header(f"{team.team_name} — {season} Season — TJC Rankings")
     
@@ -620,7 +631,7 @@ def generate_team_page(team, season, results):
     
     # Stats cards
     html += '<div class="team-stats">\n'
-    html += f'<div class="stat-card"><div class="stat-value">{wins}-{losses}</div><div class="stat-label">Record</div></div>\n'
+    html += f'<div class="stat-card"><div class="stat-value">{record_str}</div><div class="stat-label">Record</div></div>\n'
     html += f'<div class="stat-card"><div class="stat-value">{team.composite_score:.1f}</div><div class="stat-label">Composite Score</div></div>\n'
     html += f'<div class="stat-card"><div class="stat-value">{points_for}</div><div class="stat-label">Points For</div></div>\n'
     html += f'<div class="stat-card"><div class="stat-value">{points_against}</div><div class="stat-label">Points Against</div></div>\n'
