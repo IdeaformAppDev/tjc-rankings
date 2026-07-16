@@ -310,8 +310,10 @@ class RankingEngine:
     def calculate_qual_wins(self, team_metrics: Dict[str, TeamMetrics],
                            games: List[sqlite3.Row]) -> None:
         """Calculate quality wins based on opponent rankings."""
-        # First pass: use current rankings for quality calculation
-        # We'll iterate to refine
+        # Build temporary ranking from current composite scores
+        sorted_teams = sorted(team_metrics.values(), key=lambda x: x.composite_score, reverse=True)
+        temp_ranks = {tm.team_name: i+1 for i, tm in enumerate(sorted_teams)}
+        
         for tm in team_metrics.values():
             team_games = self.get_team_games(tm.team_name, games)
             qual_points = 0
@@ -329,18 +331,18 @@ class RankingEngine:
                 margin = abs(self.get_team_points(game, tm.team_name) - 
                            self.get_opponent_points(game, tm.team_name))
                 
+                opp_rank = temp_ranks.get(opp_name, 999)
+                
                 # Tiered scoring based on opponent rank
-                # Use composite score as proxy for ranking
-                # Typical scores: top team ~65-68, top 10 ~55-65, top 25 ~50-55
-                if opp.composite_score >= 60:  # Approx top 10
+                if opp_rank <= 10:      # Top 10 opponent
                     qual_points += 10
-                elif opp.composite_score >= 55:  # Approx top 25
+                elif opp_rank <= 25:    # Top 25 opponent
                     qual_points += 7
-                elif opp.composite_score >= 50:  # Approx top 40
+                elif opp_rank <= 40:    # Top 40 opponent
                     qual_points += 4
                 
                 # Close losses to quality opponents (within 7 points)
-                if margin <= 7 and opp.composite_score >= 55:
+                if margin <= 7 and opp_rank <= 25:
                     qual_points += 2
             
             # Normalize to 0-100 (cap at ~50 points max)
