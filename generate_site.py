@@ -531,7 +531,11 @@ def generate_rankings_table(results, season, week):
             elif score >= 50: return 'metric-mid'
             else: return 'metric-low'
         
-        html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a>{" <span class=\"h2h-badge\">↗</span>" if team.h2h_override else ""}</td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td>'
+        h2h_badge = ""
+        if team.h2h_override:
+            h2h_badge = f' <span class="h2h-badge" title="Head-to-Head tiebreaker vs {team.h2h_opponent}\">↗</span>'
+        
+        html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a>{h2h_badge}</td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td>'
         html += f'<td class="metric-cell {metric_class(team.win_loss_score)}">{team.win_loss_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.sos_score)}">{team.sos_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.sor_score)}">{team.sor_score:.0f}</td>'

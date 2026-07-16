@@ -46,6 +46,7 @@ class TeamMetrics:
     
     # Metadata
     h2h_override: bool = False  # True if ranked above a team with higher composite due to H2H
+    h2h_opponent: str = ""  # Which team the H2H badge applies to
 
 
 class RankingEngine:
@@ -579,6 +580,7 @@ class RankingEngine:
                     # Check if tm beat below head-to-head
                     if tm.team_name in h2h_wins and below.team_name in h2h_wins[tm.team_name]:
                         tm.h2h_override = True
+                        tm.h2h_opponent = below.team_name
                         break
         
         return rankings
