@@ -479,9 +479,12 @@
         <li>Strength of Schedule <span class="metric-weight">25%</span></li>
         <li>Strength of Record <span class="metric-weight">20%</span></li>
         <li>Point Differential (capped at ±28/game, opponent-aware) <span class="metric-weight">5%</span></li>
-        <li>Defensive Efficiency <span class="metric-weight">10%</span></li>
-        <li>Quality Wins <span class="metric-weight">15%</span></li>
-        <li>Championship Behavior <span class="metric-weight">10%</span></li>
+        <li>Offensive Efficiency <span class="metric-weight">7%</span></li>
+        <li>Defensive Efficiency <span class="metric-weight">7%</span></li>
+        <li>Quality Wins <span class="metric-weight">13%</span></li>
+        <li>Championship Behavior <span class="metric-weight">8%</span></li>
+        <li>Special Teams <span class="metric-weight">3%</span></li>
+        <li>Ball Control <span class="metric-weight">2%</span></li>
     </ul>
 </div>
 
@@ -509,7 +512,7 @@
     <p>Because Strength of Schedule and Quality Wins depend on opponent rankings, the algorithm must iterate:</p>
     <ol style="margin-left: 1.5rem; line-height: 1.8;">
         <li>Start with neutral rankings (all teams at rank 65)</li>
-        <li>Calculate all 7 metrics for each team</li>
+        <li>Calculate all 10 metrics for each team</li>
         <li>Generate composite scores using weights</li>
         <li>Re-rank teams by composite score</li>
         <li>Repeat until top 25 stabilizes (≤2 position changes)</li>

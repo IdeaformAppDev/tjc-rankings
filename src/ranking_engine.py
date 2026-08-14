@@ -36,6 +36,7 @@ class TeamMetrics:
     sos_score: float = 50.0
     sor_score: float = 50.0
     point_diff_score: float = 50.0
+    off_eff_score: float = 50.0
     def_eff_score: float = 50.0
     qual_wins_score: float = 50.0
     champ_behavior_score: float = 50.0
@@ -60,9 +61,10 @@ class RankingEngine:
         'sos': 0.25,         # Schedule matters
         'sor': 0.20,         # Strength of record is key
         'point_diff': 0.05,  # Reduced - blowouts against bad teams shouldn't count
-        'def_eff': 0.10,
-        'qual_wins': 0.15,   # Boosted - beating good teams should matter more
-        'champ_behavior': 0.10,
+        'off_eff': 0.07,     # Offensive efficiency (NEW)
+        'def_eff': 0.07,     # Reduced from 0.10 to make room for OE
+        'qual_wins': 0.13,   # Reduced from 0.15
+        'champ_behavior': 0.08,  # Reduced from 0.10
         'special_teams': 0.03,
         'ball_control': 0.02
     }
@@ -77,6 +79,7 @@ class RankingEngine:
         # Cache for API data
         self._sp_ratings = None
         self._possession_time = None
+        self._team_stats = None
         
     def __enter__(self):
         return self
@@ -433,6 +436,94 @@ class RankingEngine:
             # Normalize to 0-100 (center at 50)
             tm.champ_behavior_score = min(100, max(0, 50 + behavior_points * 3))
     
+    def fetch_team_stats(self) -> Dict[str, Dict[str, float]]:
+        """Fetch team statistics for offensive efficiency calculation."""
+        if self._team_stats is not None:
+            return self._team_stats
+        
+        stats = self.client.get_team_stats(self.season)
+        self._team_stats = {}
+        
+        for s in stats:
+            team = s.get('team')
+            stat_name = s.get('statName')
+            stat_value = s.get('statValue')
+            
+            if team and stat_name and stat_value is not None:
+                if team not in self._team_stats:
+                    self._team_stats[team] = {}
+                self._team_stats[team][stat_name] = float(stat_value)
+        
+        return self._team_stats
+    
+    def calculate_off_eff(self, team_metrics: Dict[str, TeamMetrics]) -> None:
+        """Calculate offensive efficiency.
+        
+        Sub-metrics:
+        - Points per possession (40%)
+        - 3rd down conversion % (25%)
+        - Red zone touchdown % (25%)
+        - Explosive play % (10%)
+        """
+        team_stats = self.fetch_team_stats()
+        
+        # Collect all valid values for normalization
+        ppp_values = []
+        third_down_values = []
+        red_zone_values = []
+        explosive_values = []
+        
+        for tm in team_metrics.values():
+            stats = team_stats.get(tm.team_name, {})
+            
+            # Points per possession (approximate using total points / (TDs + FGs attempted))
+            # Fallback: points per game adjusted for tempo
+            ppg = tm.points_for / tm.games_played if tm.games_played > 0 else 0
+            possessions = stats.get('possessionTime', 1800) / 60  # seconds to minutes
+            if possessions > 0:
+                ppp = ppg / (possessions / 30)  # normalize to ~30 min games
+            else:
+                ppp = ppg / 12  # assume ~12 possessions per game
+            ppp_values.append(ppp)
+            
+            # 3rd down conversion %
+            third_pct = stats.get('thirdDownConversions', 0) / max(stats.get('thirdDowns', 1), 1) * 100
+            third_down_values.append(third_pct)
+            
+            # Red zone touchdown %
+            rz_td = stats.get('redZoneConversions', 0) / max(stats.get('redZoneAttempts', 1), 1) * 100
+            red_zone_values.append(rz_td)
+            
+            # Explosive play % (20+ yard plays / total plays)
+            explosive = stats.get('playsTwentyPlusYards', 0) / max(stats.get('totalPlays', 1), 1) * 100
+            explosive_values.append(explosive)
+        
+        # Normalize each sub-metric to 0-100
+        def normalize(values, idx):
+            min_val = min(values)
+            max_val = max(values)
+            val_range = max_val - min_val if max_val != min_val else 1
+            return (values[idx] - min_val) / val_range * 100
+        
+        for i, tm in enumerate(team_metrics.values()):
+            if tm.games_played == 0:
+                tm.off_eff_score = 50.0
+                continue
+            
+            ppp_norm = normalize(ppp_values, i)
+            third_norm = normalize(third_down_values, i)
+            rz_norm = normalize(red_zone_values, i)
+            explosive_norm = normalize(explosive_values, i)
+            
+            # Weighted composite
+            tm.off_eff_score = (
+                ppp_norm * 0.40 +
+                third_norm * 0.25 +
+                rz_norm * 0.25 +
+                explosive_norm * 0.10
+            )
+            tm.off_eff_score = min(100, max(0, tm.off_eff_score))
+    
     def calculate_def_eff(self, team_metrics: Dict[str, TeamMetrics],
                          games: List[sqlite3.Row]) -> None:
         """Calculate defensive efficiency (simplified)."""
@@ -547,6 +638,7 @@ class RankingEngine:
                 tm.sos_score * self.WEIGHTS['sos'] +
                 tm.sor_score * self.WEIGHTS['sor'] +
                 tm.point_diff_score * self.WEIGHTS['point_diff'] +
+                tm.off_eff_score * self.WEIGHTS['off_eff'] +
                 tm.def_eff_score * self.WEIGHTS['def_eff'] +
                 tm.qual_wins_score * self.WEIGHTS['qual_wins'] +
                 tm.champ_behavior_score * self.WEIGHTS['champ_behavior'] +
@@ -558,7 +650,7 @@ class RankingEngine:
         """Calculate individual rankings for each metric."""
         metric_names = [
             'win_loss_score', 'sos_score', 'sor_score', 'point_diff_score',
-            'def_eff_score', 'qual_wins_score', 'champ_behavior_score',
+            'off_eff_score', 'def_eff_score', 'qual_wins_score', 'champ_behavior_score',
             'special_teams_score', 'ball_control_score'
         ]
         
@@ -839,6 +931,7 @@ class RankingEngine:
             self.calculate_sos(team_metrics, games)
             self.calculate_sor(team_metrics)
             self.calculate_point_diff(team_metrics, games)
+            self.calculate_off_eff(team_metrics)
             self.calculate_def_eff(team_metrics, games)
             self.calculate_qual_wins(team_metrics, games)
             self.calculate_champ_behavior(team_metrics, games)

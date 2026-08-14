@@ -511,12 +511,12 @@ def generate_rankings_table(results, season, week):
     # Metrics legend
     html += '<div class="metrics-legend">\n'
     html += '<h3>📊 Understanding the Metrics</h3>\n'
-    html += '<p><strong>WL:</strong> Win/Loss (10%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (capped at ±28/game, opponent-aware) 5% • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (15%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>\n'
+    html += '<p><strong>WL:</strong> Win/Loss (10%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (capped at ±28/game, opponent-aware) 5% • <strong>OE:</strong> Offensive Efficiency (7%) • <strong>DE:</strong> Defensive Efficiency (7%) • <strong>QW:</strong> Quality Wins (13%) • <strong>CB:</strong> Championship Behavior (8%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>\n'
     html += '<p><span style="color: #38a169; font-weight: 600;">Green</span> = Strong (75+) • <span style="color: #d69e2e;">Yellow</span> = Average (50-74) • <span style="color: var(--accent);">Red</span> = Below Average (<50)</p>\n'
     html += '<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>\n'
     html += '</div>\n'
     
-    html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th><th class="metric-cell">ST</th><th class="metric-cell">BC</th></tr>\n</thead>\n<tbody>\n'
+    html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">OE</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th><th class="metric-cell">ST</th><th class="metric-cell">BC</th></tr>\n</thead>\n<tbody>\n'
     
     for rank, team in enumerate(results[:25], 1):
         if team.ties > 0:
@@ -540,6 +540,7 @@ def generate_rankings_table(results, season, week):
         html += f'<td class="metric-cell {metric_class(team.sos_score)}">{team.sos_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.sor_score)}">{team.sor_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.point_diff_score)}">{team.point_diff_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.off_eff_score)}">{team.off_eff_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.def_eff_score)}">{team.def_eff_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.qual_wins_score)}">{team.qual_wins_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.champ_behavior_score)}">{team.champ_behavior_score:.0f}</td>'
@@ -648,15 +649,18 @@ def generate_team_page(team, season, results):
     # Metrics breakdown
     html += '<h2 style="font-family: \'Playfair Display\', serif; margin-bottom: 1rem; color: var(--primary);">Metric Breakdown</h2>\n'
     html += '<div class="content-section" style="margin-bottom: 2rem;">\n'
-    html += '<p style="margin-bottom: 1rem; color: #718096; font-size: 0.9rem;">How {team.team_name} scores across all 7 factors (0-100 scale). Higher is better.</p>\n'
+    html += '<p style="margin-bottom: 1rem; color: #718096; font-size: 0.9rem;">How {team.team_name} scores across all 10 factors (0-100 scale). Higher is better.</p>\n'
     html += '<ul class="metric-list">\n'
     html += f'<li>Win/Loss Record (10%) <span class="metric-weight">{team.win_loss_score:.1f}</span></li>\n'
     html += f'<li>Strength of Schedule (25%) <span class="metric-weight">{team.sos_score:.1f}</span></li>\n'
     html += f'<li>Strength of Record (20%) <span class="metric-weight">{team.sor_score:.1f}</span></li>\n'
     html += f'<li>Point Differential (capped at ±28/game, opponent-aware) (5%) <span class="metric-weight">{team.point_diff_score:.1f}</span></li>\n'
-    html += f'<li>Defensive Efficiency (10%) <span class="metric-weight">{team.def_eff_score:.1f}</span></li>\n'
-    html += f'<li>Quality Wins (15%) <span class="metric-weight">{team.qual_wins_score:.1f}</span></li>\n'
-    html += f'<li>Championship Behavior (10%) <span class="metric-weight">{team.champ_behavior_score:.1f}</span></li>\n'
+    html += f'<li>Offensive Efficiency (7%) <span class="metric-weight">{team.off_eff_score:.1f}</span></li>\n'
+    html += f'<li>Defensive Efficiency (7%) <span class="metric-weight">{team.def_eff_score:.1f}</span></li>\n'
+    html += f'<li>Quality Wins (13%) <span class="metric-weight">{team.qual_wins_score:.1f}</span></li>\n'
+    html += f'<li>Championship Behavior (8%) <span class="metric-weight">{team.champ_behavior_score:.1f}</span></li>\n'
+    html += f'<li>Special Teams (3%) <span class="metric-weight">{team.special_teams_score:.1f}</span></li>\n'
+    html += f'<li>Ball Control (2%) <span class="metric-weight">{team.ball_control_score:.1f}</span></li>\n'
     html += '</ul>\n'
     html += '</div>\n'
     
@@ -770,9 +774,12 @@ about_content = """
         <li>Strength of Schedule <span class="metric-weight">25%</span></li>
         <li>Strength of Record <span class="metric-weight">20%</span></li>
         <li>Point Differential (capped at ±28/game, opponent-aware) <span class="metric-weight">5%</span></li>
-        <li>Defensive Efficiency <span class="metric-weight">10%</span></li>
-        <li>Quality Wins <span class="metric-weight">15%</span></li>
-        <li>Championship Behavior <span class="metric-weight">10%</span></li>
+        <li>Offensive Efficiency <span class="metric-weight">7%</span></li>
+        <li>Defensive Efficiency <span class="metric-weight">7%</span></li>
+        <li>Quality Wins <span class="metric-weight">13%</span></li>
+        <li>Championship Behavior <span class="metric-weight">8%</span></li>
+        <li>Special Teams <span class="metric-weight">3%</span></li>
+        <li>Ball Control <span class="metric-weight">2%</span></li>
     </ul>
 </div>
 
@@ -800,7 +807,7 @@ about_content = """
     <p>Because Strength of Schedule and Quality Wins depend on opponent rankings, the algorithm must iterate:</p>
     <ol style="margin-left: 1.5rem; line-height: 1.8;">
         <li>Start with neutral rankings (all teams at rank 65)</li>
-        <li>Calculate all 7 metrics for each team</li>
+        <li>Calculate all 10 metrics for each team</li>
         <li>Generate composite scores using weights</li>
         <li>Re-rank teams by composite score</li>
         <li>Repeat until top 25 stabilizes (≤2 position changes)</li>
