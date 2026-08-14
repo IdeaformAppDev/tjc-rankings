@@ -11,6 +11,8 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
+from api_client import CFBDClient
+
 DB_PATH = Path(__file__).parent.parent / "data" / "cfb_ranking.db"
 
 
@@ -70,6 +72,11 @@ class RankingEngine:
         self.week = week
         self.conn = sqlite3.connect(DB_PATH)
         self.conn.row_factory = sqlite3.Row
+        self.client = CFBDClient()
+        
+        # Cache for API data
+        self._sp_ratings = None
+        self._possession_time = None
         
     def __enter__(self):
         return self
@@ -93,6 +100,37 @@ class RankingEngine:
                 ORDER BY week, start_date
             """, (self.season,))
         return cursor.fetchall()
+    
+    def fetch_sp_ratings(self) -> Dict[str, float]:
+        """Fetch SP+ ratings including special teams."""
+        if self._sp_ratings is not None:
+            return self._sp_ratings
+        
+        ratings = self.client.get_sp_ratings(self.season)
+        self._sp_ratings = {}
+        for r in ratings:
+            team = r.get('team')
+            if team:
+                st = r.get('specialTeams', {})
+                self._sp_ratings[team] = st.get('rating', 0.0)
+        
+        return self._sp_ratings
+    
+    def fetch_possession_time(self) -> Dict[str, float]:
+        """Fetch possession time for ball control."""
+        if self._possession_time is not None:
+            return self._possession_time
+        
+        stats = self.client.get_possession_time(self.season)
+        self._possession_time = {}
+        for s in stats:
+            team = s.get('team')
+            if team:
+                # statValue is in seconds (e.g., 24457)
+                # Convert to a score: higher = better ball control
+                self._possession_time[team] = float(s.get('statValue', 0))
+        
+        return self._possession_time
     
     def get_team_games(self, team_name: str, games: List[sqlite3.Row]) -> List[sqlite3.Row]:
         """Filter games for a specific team."""
@@ -430,16 +468,60 @@ class RankingEngine:
                 tm.def_eff_score = 50.0
     
     def calculate_special_teams(self, team_metrics: Dict[str, TeamMetrics]) -> None:
-        """Placeholder for special teams (requires detailed play-by-play data)."""
-        # Without detailed kicking data, use a neutral score
+        """Calculate special teams using SP+ ratings."""
+        sp_ratings = self.fetch_sp_ratings()
+        
+        if not sp_ratings:
+            # Fallback to neutral if API fails
+            for tm in team_metrics.values():
+                tm.special_teams_score = 50.0
+            return
+        
+        # SP+ special teams ratings are typically in range -10 to +10
+        # Higher is better. Convert to 0-100 scale.
+        values = list(sp_ratings.values())
+        if not values:
+            for tm in team_metrics.values():
+                tm.special_teams_score = 50.0
+            return
+        
+        min_val = min(values)
+        max_val = max(values)
+        val_range = max_val - min_val if max_val != min_val else 1
+        
         for tm in team_metrics.values():
-            tm.special_teams_score = 50.0
+            rating = sp_ratings.get(tm.team_name, 0.0)
+            # Normalize to 0-100, center around 50
+            normalized = (rating - min_val) / val_range * 100
+            tm.special_teams_score = min(100, max(0, normalized))
     
     def calculate_ball_control(self, team_metrics: Dict[str, TeamMetrics]) -> None:
-        """Placeholder for ball control (requires time of possession data)."""
-        # Without TOP data, use a neutral score
+        """Calculate ball control using possession time."""
+        possession = self.fetch_possession_time()
+        
+        if not possession:
+            # Fallback to neutral if API fails
+            for tm in team_metrics.values():
+                tm.ball_control_score = 50.0
+            return
+        
+        # Possession time is in seconds per game (typical range: 18000-30000)
+        # Higher = better ball control. Convert to 0-100 scale.
+        values = list(possession.values())
+        if not values:
+            for tm in team_metrics.values():
+                tm.ball_control_score = 50.0
+            return
+        
+        min_val = min(values)
+        max_val = max(values)
+        val_range = max_val - min_val if max_val != min_val else 1
+        
         for tm in team_metrics.values():
-            tm.ball_control_score = 50.0
+            seconds = possession.get(tm.team_name, 0.0)
+            # Normalize to 0-100
+            normalized = (seconds - min_val) / val_range * 100
+            tm.ball_control_score = min(100, max(0, normalized))
     
     def compute_composite(self, team_metrics: Dict[str, TeamMetrics]) -> None:
         """Calculate final composite score."""
