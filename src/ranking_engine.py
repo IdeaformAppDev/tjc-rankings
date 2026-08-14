@@ -58,7 +58,7 @@ class RankingEngine:
     # Weights from spec - adjusted to boost SOS and reduce win/loss
     WEIGHTS = {
         'win_loss': 0.10,    # Don't overvalue raw wins
-        'sos': 0.25,         # Schedule matters
+        'sos': 0.20,         # Reduced from 0.25 — schedule matters but shouldn't override H2H
         'sor': 0.20,         # Strength of record is key
         'point_diff': 0.05,  # Reduced - blowouts against bad teams shouldn't count
         'off_eff': 0.07,     # Offensive efficiency (NEW)
@@ -694,7 +694,7 @@ class RankingEngine:
     
     def apply_head_to_head(self, rankings: List[TeamMetrics], 
                            games: List[sqlite3.Row], 
-                           threshold: float = 2.0) -> List[TeamMetrics]:
+                           threshold: float = 2.5) -> List[TeamMetrics]:
         """Apply head-to-head tiebreaker for closely-ranked teams.
         
         If Team A beat Team B and they're within `threshold` composite points,
@@ -962,7 +962,7 @@ class RankingEngine:
         ranked = self.apply_conference_champion_bonus(ranked, games, bonus=2.5)
         
         # Apply head-to-head tiebreaker LAST (after all other adjustments)
-        ranked = self.apply_head_to_head(ranked, games, threshold=2.0)
+        ranked = self.apply_head_to_head(ranked, games, threshold=2.5)
         
         # Compute individual metric ranks for final rankings
         metric_ranks = self.compute_metric_ranks(team_metrics)

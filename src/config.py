@@ -33,7 +33,7 @@ ICONIC_SEASONS = [
 # Algorithm weights (must sum to 1.0)
 WEIGHTS = {
     "win_loss": 0.10,
-    "strength_of_schedule": 0.25,
+    "strength_of_schedule": 0.20,  # Reduced from 0.25
     "strength_of_record": 0.20,
     "point_differential": 0.05,
     "offensive_efficiency": 0.07,  # NEW

@@ -526,9 +526,25 @@ def generate_rankings_table(results, season, week):
         team_slug = slugify(team.team_name)
         
         # Color-code metrics
-        def metric_class(score):
-            if score >= 75: return 'metric-high'
-            elif score >= 50: return 'metric-mid'
+        # Per-metric percentile thresholds for coloring
+        # Based on distribution analysis across all historical data
+        # Green = top quartile (75th percentile), Yellow = middle 50%, Red = bottom quartile
+        def metric_class(score, metric_name):
+            thresholds = {
+                'win_loss': (35, 50),      # p25=20, p50=29, p75=36, p90=48
+                'sos': (55, 60),           # p25=48, p50=50, p75=55, p90=59
+                'sor': (24, 33),           # p25=14, p50=20, p75=24, p90=33
+                'point_diff': (53, 58),    # p25=43, p50=48, p75=53, p90=57
+                'off_eff': (18, 26),       # p25=10, p50=15, p75=18, p90=26
+                'def_eff': (62, 70),       # p25=39, p50=53, p75=62, p90=70
+                'qual_wins': (22, 40),     # p25=0, p50=8, p75=22, p90=40
+                'champ_behavior': (38, 62), # p25=0, p50=0, p75=38, p90=62
+                'special_teams': (50, 50),  # binary-ish, default 50
+                'ball_control': (50, 50),   # binary-ish, default 50
+            }
+            low, high = thresholds.get(metric_name, (50, 75))
+            if score >= high: return 'metric-high'
+            elif score >= low: return 'metric-mid'
             else: return 'metric-low'
         
         h2h_badge = ""
@@ -536,16 +552,16 @@ def generate_rankings_table(results, season, week):
             h2h_badge = f' <span class="h2h-badge" title="Head-to-Head tiebreaker vs {team.h2h_opponent}\">↗</span>'
         
         html += f'<tr><td class="rank">{rank}</td><td><a href="team-{season}-{team_slug}.html" class="team-name">{team.team_name}</a>{h2h_badge}</td><td class="conference">{team.conference}</td><td class="record">{record}</td><td class="score">{team.composite_score:.1f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.win_loss_score)}">{team.win_loss_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.sos_score)}">{team.sos_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.sor_score)}">{team.sor_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.point_diff_score)}">{team.point_diff_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.off_eff_score)}">{team.off_eff_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.def_eff_score)}">{team.def_eff_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.qual_wins_score)}">{team.qual_wins_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.champ_behavior_score)}">{team.champ_behavior_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.special_teams_score)}">{team.special_teams_score:.0f}</td>'
-        html += f'<td class="metric-cell {metric_class(team.ball_control_score)}">{team.ball_control_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.win_loss_score, "win_loss")}">{team.win_loss_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.sos_score, "sos")}">{team.sos_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.sor_score, "sor")}">{team.sor_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.point_diff_score, "point_diff")}">{team.point_diff_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.off_eff_score, "off_eff")}">{team.off_eff_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.def_eff_score, "def_eff")}">{team.def_eff_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.qual_wins_score, "qual_wins")}">{team.qual_wins_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.champ_behavior_score, "champ_behavior")}">{team.champ_behavior_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.special_teams_score, "special_teams")}">{team.special_teams_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.ball_control_score, "ball_control")}">{team.ball_control_score:.0f}</td>'
         html += '</tr>\n'
     
     html += '</tbody>\n</table>\n'
