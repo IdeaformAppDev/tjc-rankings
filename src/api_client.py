@@ -72,6 +72,18 @@ class CFBDClient:
         
         return self._get("/records", params)
     
+    def get_sp_ratings(self, season: int) -> List[Dict]:
+        """Fetch SP+ ratings including special teams."""
+        params = {"year": season}
+        return self._get("/ratings/sp", params)
+    
+    def get_possession_time(self, season: int, season_type: str = "regular") -> List[Dict]:
+        """Fetch possession time stats for ball control."""
+        params = {"year": season, "seasonType": season_type}
+        stats = self._get("/stats/season", params)
+        # Filter to possessionTime only
+        return [s for s in stats if s.get('statName') == 'possessionTime']
+    
     def get_conferences(self) -> List[Dict]:
         """Fetch all conferences."""
         return self._get("/conferences")
