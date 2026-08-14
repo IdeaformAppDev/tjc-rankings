@@ -697,6 +697,10 @@ def generate_team_page(team, season, results):
 
 # Generate pages for each season
 for season in seasons:
+    if season not in all_rankings:
+        print(f"Skipping pages for {season} (no data)")
+        continue
+    
     results = all_rankings[season]
     
     rankings_active = ' class="active"' if season == 2025 else ''
