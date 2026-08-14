@@ -511,12 +511,12 @@ def generate_rankings_table(results, season, week):
     # Metrics legend
     html += '<div class="metrics-legend">\n'
     html += '<h3>📊 Understanding the Metrics</h3>\n'
-    html += '<p><strong>WL:</strong> Win/Loss (10%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (capped at ±28/game, opponent-aware) 5% • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (15%) • <strong>CB:</strong> Championship Behavior (10%)</p>\n'
+    html += '<p><strong>WL:</strong> Win/Loss (10%) • <strong>SOS:</strong> Strength of Schedule (25%) • <strong>SOR:</strong> Strength of Record (20%) • <strong>PD:</strong> Point Differential (capped at ±28/game, opponent-aware) 5% • <strong>DE:</strong> Defensive Efficiency (10%) • <strong>QW:</strong> Quality Wins (15%) • <strong>CB:</strong> Championship Behavior (10%) • <strong>ST:</strong> Special Teams (3%) • <strong>BC:</strong> Ball Control (2%)</p>\n'
     html += '<p><span style="color: #38a169; font-weight: 600;">Green</span> = Strong (75+) • <span style="color: #d69e2e;">Yellow</span> = Average (50-74) • <span style="color: var(--accent);">Red</span> = Below Average (<50)</p>\n'
     html += '<p><span class="h2h-badge">↗</span> = Head-to-Head tiebreaker applied (team ranked above opponent with higher composite score)</p>\n'
     html += '</div>\n'
     
-    html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th></tr>\n</thead>\n<tbody>\n'
+    html += '<table class="rankings-table">\n<thead>\n<tr><th>Rank</th><th>Team</th><th>Conf</th><th>Rec</th><th style="text-align: right;">Score</th><th class="metric-cell">WL</th><th class="metric-cell">SOS</th><th class="metric-cell">SOR</th><th class="metric-cell">PD</th><th class="metric-cell">DE</th><th class="metric-cell">QW</th><th class="metric-cell">CB</th><th class="metric-cell">ST</th><th class="metric-cell">BC</th></tr>\n</thead>\n<tbody>\n'
     
     for rank, team in enumerate(results[:25], 1):
         if team.ties > 0:
@@ -543,6 +543,8 @@ def generate_rankings_table(results, season, week):
         html += f'<td class="metric-cell {metric_class(team.def_eff_score)}">{team.def_eff_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.qual_wins_score)}">{team.qual_wins_score:.0f}</td>'
         html += f'<td class="metric-cell {metric_class(team.champ_behavior_score)}">{team.champ_behavior_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.special_teams_score)}">{team.special_teams_score:.0f}</td>'
+        html += f'<td class="metric-cell {metric_class(team.ball_control_score)}">{team.ball_control_score:.0f}</td>'
         html += '</tr>\n'
     
     html += '</tbody>\n</table>\n'
