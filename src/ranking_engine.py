@@ -468,39 +468,55 @@ class RankingEngine:
                 tm.def_eff_score = 50.0
     
     def calculate_special_teams(self, team_metrics: Dict[str, TeamMetrics]) -> None:
-        """Calculate special teams using SP+ ratings."""
+        """Calculate special teams using SP+ ratings.
+        
+        SP+ data only available from 2006 onward."""
+        # SP+ ratings not available before 2006
+        if self.season < 2006:
+            for tm in team_metrics.values():
+                tm.special_teams_score = 50.0
+            return
+        
         sp_ratings = self.fetch_sp_ratings()
         
         if not sp_ratings:
-            # Fallback to neutral if API fails
+            for tm in team_metrics.values():
+                tm.special_teams_score = 50.0
+            return
+        
+        # Filter out None values (API returns None for seasons before SP+ existed)
+        valid_ratings = {k: v for k, v in sp_ratings.items() if v is not None}
+        
+        if not valid_ratings:
             for tm in team_metrics.values():
                 tm.special_teams_score = 50.0
             return
         
         # SP+ special teams ratings are typically in range -10 to +10
         # Higher is better. Convert to 0-100 scale.
-        values = list(sp_ratings.values())
-        if not values:
-            for tm in team_metrics.values():
-                tm.special_teams_score = 50.0
-            return
-        
+        values = list(valid_ratings.values())
         min_val = min(values)
         max_val = max(values)
         val_range = max_val - min_val if max_val != min_val else 1
         
         for tm in team_metrics.values():
-            rating = sp_ratings.get(tm.team_name, 0.0)
-            # Normalize to 0-100, center around 50
+            rating = valid_ratings.get(tm.team_name, 0.0)
             normalized = (rating - min_val) / val_range * 100
             tm.special_teams_score = min(100, max(0, normalized))
     
     def calculate_ball_control(self, team_metrics: Dict[str, TeamMetrics]) -> None:
-        """Calculate ball control using possession time."""
+        """Calculate ball control using possession time.
+        
+        Possession time data available from 2004 onward."""
+        # Possession time not available before 2004
+        if self.season < 2004:
+            for tm in team_metrics.values():
+                tm.ball_control_score = 50.0
+            return
+        
         possession = self.fetch_possession_time()
         
         if not possession:
-            # Fallback to neutral if API fails
             for tm in team_metrics.values():
                 tm.ball_control_score = 50.0
             return
